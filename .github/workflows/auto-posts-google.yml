@@ -1,0 +1,53 @@
+name: Sincronizar Novidades Oficiais do Google
+
+on:
+  schedule:
+    # Roda todo dia às 09:00 no horário de Brasília (12:00 UTC)
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+    inputs:
+      max_new_posts:
+        description: 'Máximo de novos rascunhos por execução'
+        required: false
+        default: '2'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  gerar-rascunhos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Coletar novidades do Google e gerar rascunhos
+        env:
+          # Opcional: adicione sua chave gratuita do Google AI Studio em Settings -> Secrets -> Actions
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Opcional: adicione URLs extras de RSS separadas por vírgula em Settings -> Variables -> Actions
+          EXTRA_RSS_FEEDS: ${{ vars.EXTRA_RSS_FEEDS }}
+          MAX_NEW_POSTS: ${{ github.event.inputs.max_new_posts || '2' }}
+        run: node scripts/sync-google-news.mjs
+
+      - name: Criar Pull Request para revisão antes de publicar
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'content: novos rascunhos automaticos de novidades do Google'
+          title: 'Novos rascunhos automaticos — Google IA & Workspace'
+          body: |
+            Este Pull Request foi gerado automaticamente a partir dos feeds oficiais do Google (Workspace Updates e Google AI).
+
+            **Como publicar no seu blog:**
+            1. Clique na aba **Files changed** para revisar o(s) artigo(s) em `src/data/autoPosts.json`.
+            2. Se gostar, clique em **Merge pull request** — o GitHub Pages atualiza o site automaticamente!
+            3. Se não quiser publicar hoje, basta clicar em **Close pull request**.
+          branch: auto/novidades-google
+          delete-branch: true
