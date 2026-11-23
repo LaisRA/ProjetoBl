@@ -234,10 +234,19 @@ Retorne APENAS um JSON válido com esta estrutura exata:
           ],
     blocosDeConteudo:
       Array.isArray(parsed.blocosDeConteudo) && parsed.blocosDeConteudo.length > 0
-        ? parsed.blocosDeConteudo
+        ? [...parsed.blocosDeConteudo, WORKSPACE_AFFILIATE_CTA]
         : buildFallbackBlocks(item),
   };
 }
+
+const WORKSPACE_AFFILIATE_CTA = {
+  tipo: 'cta',
+  titulo: 'Quer usar o Google Workspace + Gemini no seu negócio?',
+  texto:
+    'Conheça os planos oficiais do Google Workspace pelo meu link de indicação. Eu também tenho **códigos promocionais exclusivos** — me chame no WhatsApp **(37) 99904-6824** para garantir o seu desconto.',
+  textoBotao: 'Conhecer o Google Workspace',
+  link: 'https://sharegoogleworkspace.advocate.impact.com/mzZ2zF7',
+};
 
 function buildFallbackBlocks(item) {
   const excerpt =
@@ -274,6 +283,7 @@ function buildFallbackBlocks(item) {
       texto:
         'Configure o secret `GEMINI_API_KEY` (plano gratuito do Google AI Studio) nas configurações do seu repositório GitHub para que os próximos artigos sejam traduzidos e estruturados automaticamente em português completo.',
     },
+    WORKSPACE_AFFILIATE_CTA,
   ];
 }
 

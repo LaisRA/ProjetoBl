@@ -4,7 +4,7 @@
  */
 
 import { ArrowLeft, Search, X } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ArticleCard } from './components/ArticleCard';
 import { ArticleView } from './components/ArticleView';
 import { Footer } from './components/Footer';
@@ -13,6 +13,7 @@ import { TemplatesView } from './components/TemplatesView';
 import { WorkspaceTopBar } from './components/WorkspaceBanner';
 import { CATEGORIAS, posts, type Categoria } from './data/posts';
 import { useHashRoute } from './hooks/useHashRoute';
+import { useSeo } from './hooks/useSeo';
 import { useTheme } from './hooks/useTheme';
 
 function normalizeText(value: string): string {
@@ -71,31 +72,7 @@ export default function App() {
     return posts.find((post) => post.slug === route.slug) ?? null;
   }, [route]);
 
-  // Atualiza o título da aba e envia visualização de página (page_view) ao Google Analytics 4 em rotas hash
-  useEffect(() => {
-    let title = 'Lais Raniele — Tutoriais de IA, Gestão Financeira e Automação';
-    let pagePath = '/';
-
-    if (route.view === 'article' && activePost) {
-      title = `${activePost.titulo} | Lais Raniele`;
-      pagePath = `/artigo/${activePost.slug}`;
-    } else if (route.view === 'templates') {
-      title = 'Templates Prontos | Lais Raniele';
-      pagePath = '/templates';
-    }
-
-    document.title = title;
-
-    const gtagFn = (window as Window & { gtag?: (...args: unknown[]) => void })
-      .gtag;
-    if (typeof gtagFn === 'function') {
-      gtagFn('event', 'page_view', {
-        page_title: title,
-        page_path: pagePath,
-        page_location: window.location.href,
-      });
-    }
-  }, [route, activePost]);
+  useSeo(route, activePost);
 
   const openPost = (slug: string) => {
     navigate(`#/artigo/${slug}`);

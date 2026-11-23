@@ -77,6 +77,7 @@ export interface Post {
   data: string;
   tempoLeitura: string;
   youtubeId?: string;
+  imagemOg?: string;
   fonteUrl?: string;
   fonteNome?: string;
   linkTemplate: string;
