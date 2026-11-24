@@ -62,7 +62,10 @@ export function Footer({ onNavigate }: FooterProps) {
 
         {/* Copyright & Social Links */}
         <div className="flex flex-col items-start justify-between gap-4 border-t border-[#E4E4E7] pt-6 sm:flex-row sm:items-center dark:border-[#2A243D]">
-          <p className="text-sm text-[#52525B] dark:text-[#9CA3AF]">
+          <p
+            translate="no"
+            className="notranslate text-sm text-[#52525B] dark:text-[#9CA3AF]"
+          >
             © 2026 Lais Raniele — laisraniele.com.br
           </p>
 

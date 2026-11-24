@@ -15,6 +15,7 @@ import { TemplatesView } from './components/TemplatesView';
 import { WorkspaceTopBar } from './components/WorkspaceBanner';
 import { CATEGORIAS, posts, type Categoria } from './data/posts';
 import { useHashRoute } from './hooks/useHashRoute';
+import { useLanguage } from './hooks/useLanguage';
 import { useSeo } from './hooks/useSeo';
 import { useTheme } from './hooks/useTheme';
 
@@ -27,6 +28,7 @@ function normalizeText(value: string): string {
 
 export default function App() {
   const { theme, toggleTheme } = useTheme();
+  const { currentLanguage, languages, setLanguage } = useLanguage();
   const { route, navigate } = useHashRoute();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<Categoria | 'Todos'>(
@@ -92,6 +94,9 @@ export default function App() {
       <Header
         route={route}
         theme={theme}
+        currentLanguage={currentLanguage}
+        languages={languages}
+        onSelectLanguage={setLanguage}
         onToggleTheme={toggleTheme}
         onNavigate={navigate}
       />

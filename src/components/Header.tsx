@@ -2,11 +2,16 @@ import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useState } from 'react';
 import { LINKS_SOCIAIS } from '../data/posts';
 import type { AppRoute } from '../hooks/useHashRoute';
+import type { LanguageOption } from '../hooks/useLanguage';
 import type { Theme } from '../hooks/useTheme';
+import { LanguageSelector } from './LanguageSelector';
 
 interface HeaderProps {
   route: AppRoute;
   theme: Theme;
+  currentLanguage: LanguageOption;
+  languages: LanguageOption[];
+  onSelectLanguage: (code: string) => void;
   onToggleTheme: () => void;
   onNavigate: (hash: string) => void;
 }
@@ -14,6 +19,9 @@ interface HeaderProps {
 export function Header({
   route,
   theme,
+  currentLanguage,
+  languages,
+  onSelectLanguage,
   onToggleTheme,
   onNavigate,
 }: HeaderProps) {
@@ -37,7 +45,8 @@ export function Header({
             e.preventDefault();
             handleNav('#/');
           }}
-          className="font-display text-xl font-bold tracking-tight text-[#18181B] transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7C3AED] dark:text-[#F3F4F6] dark:focus-visible:outline-[#8B5CF6] whitespace-nowrap shrink-0"
+          translate="no"
+          className="notranslate font-display text-xl font-bold tracking-tight text-[#18181B] transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7C3AED] dark:text-[#F3F4F6] dark:focus-visible:outline-[#8B5CF6] whitespace-nowrap shrink-0"
         >
           Lais Raniele<span className="text-[#7C3AED] dark:text-[#8B5CF6]">.</span>
         </a>
@@ -94,8 +103,14 @@ export function Header({
           </a>
         </nav>
 
-        {/* Zone 3: Primary Theme Toggle (+ mobile menu trigger) */}
+        {/* Zone 3: Language Switcher + Theme Toggle (+ mobile menu trigger) */}
         <div className="flex items-center gap-2 shrink-0">
+          <LanguageSelector
+            currentLanguage={currentLanguage}
+            languages={languages}
+            onSelectLanguage={onSelectLanguage}
+          />
+
           <button
             type="button"
             onClick={onToggleTheme}

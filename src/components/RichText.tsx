@@ -28,7 +28,8 @@ export function RichText({ text }: RichTextProps) {
           return (
             <code
               key={idx}
-              className="rounded bg-[#EDE9FE]/80 px-1.5 py-0.5 font-mono text-[0.875em] text-[#6D28D9] dark:bg-[#8B5CF6]/16 dark:text-[#C4B5FD]"
+              translate="no"
+              className="notranslate rounded bg-[#EDE9FE]/80 px-1.5 py-0.5 font-mono text-[0.875em] text-[#6D28D9] dark:bg-[#8B5CF6]/16 dark:text-[#C4B5FD]"
             >
               {token.slice(1, -1)}
             </code>

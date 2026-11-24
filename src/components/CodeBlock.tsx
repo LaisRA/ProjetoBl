@@ -95,9 +95,19 @@ export function CodeBlock({ linguagem, titulo, conteudo }: CodeBlockProps) {
       </div>
 
       {/* Code / Prompt Body */}
-      <pre className="code-scroll overflow-x-auto p-4 sm:p-5 text-[13px] sm:text-sm leading-relaxed text-[#18181B] dark:text-[#F3F4F6]">
-        <code className="font-mono whitespace-pre">{conteudo}</code>
-      </pre>
+      {(() => {
+        const isPrompt = linguagem.toLowerCase().includes('prompt');
+        return (
+          <pre
+            translate={isPrompt ? 'yes' : 'no'}
+            className={`code-scroll overflow-x-auto p-4 sm:p-5 text-[13px] sm:text-sm leading-relaxed text-[#18181B] dark:text-[#F3F4F6] ${
+              isPrompt ? '' : 'notranslate'
+            }`}
+          >
+            <code className="font-mono whitespace-pre">{conteudo}</code>
+          </pre>
+        );
+      })()}
     </div>
   );
 }
