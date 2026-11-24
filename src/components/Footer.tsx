@@ -1,7 +1,11 @@
 import { ArrowUpRight, MessageCircle } from 'lucide-react';
 import { LINKS_SOCIAIS } from '../data/posts';
 
-export function Footer() {
+interface FooterProps {
+  onNavigate: (hash: string) => void;
+}
+
+export function Footer({ onNavigate }: FooterProps) {
   return (
     <footer className="mt-20 border-t border-[#E4E4E7] bg-[#FAFAFC] dark:border-[#2A243D] dark:bg-[#0D0B14]">
       <div className="mx-auto max-w-5xl px-4 pt-12 pb-8 sm:px-6">
@@ -63,6 +67,16 @@ export function Footer() {
           </p>
 
           <div className="flex flex-wrap items-center gap-6 text-sm font-medium">
+            <a
+              href="#/privacidade"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate('#/privacidade');
+              }}
+              className="text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
+            >
+              Privacidade
+            </a>
             <a
               href={LINKS_SOCIAIS.youtube}
               target="_blank"

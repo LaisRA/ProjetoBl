@@ -7,8 +7,10 @@ import { ArrowLeft, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { ArticleCard } from './components/ArticleCard';
 import { ArticleView } from './components/ArticleView';
+import { CookieConsent } from './components/CookieConsent';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
+import { PrivacyView } from './components/PrivacyView';
 import { TemplatesView } from './components/TemplatesView';
 import { WorkspaceTopBar } from './components/WorkspaceBanner';
 import { CATEGORIAS, posts, type Categoria } from './data/posts';
@@ -30,6 +32,7 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<Categoria | 'Todos'>(
     'Todos'
   );
+  const [cookieResetSignal, setCookieResetSignal] = useState(0);
 
   const filteredPosts = useMemo(() => {
     const query = normalizeText(searchQuery.trim());
@@ -249,9 +252,20 @@ export default function App() {
         {route.view === 'templates' && (
           <TemplatesView posts={posts} onOpenPost={openPost} />
         )}
+
+        {route.view === 'privacy' && (
+          <PrivacyView
+            onBack={() => navigate('#/')}
+            onResetCookies={() => setCookieResetSignal((n) => n + 1)}
+          />
+        )}
       </main>
 
-      <Footer />
+      <Footer onNavigate={navigate} />
+      <CookieConsent
+        resetSignal={cookieResetSignal}
+        onOpenPrivacy={() => navigate('#/privacidade')}
+      />
     </div>
   );
 }

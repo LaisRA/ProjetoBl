@@ -135,6 +135,15 @@ export function useSeo(route: AppRoute, activePost: Post | null) {
       ogImage = defaultImage;
       ogImageAlt = title;
       pagePath = '/templates';
+    } else if (route.view === 'privacy') {
+      title = `Política de Privacidade e Cookies | ${SITE_NAME}`;
+      description =
+        'Saiba como o blog laisraniele.com.br trata cookies, Google Analytics 4, links de afiliados e seus direitos conforme a LGPD.';
+      canonicalUrl = `${baseUrl}#/privacidade`;
+      ogType = 'website';
+      ogImage = defaultImage;
+      ogImageAlt = title;
+      pagePath = '/privacidade';
     }
 
     // Standard SEO
@@ -197,9 +206,16 @@ export function useSeo(route: AppRoute, activePost: Post | null) {
       removeMeta('property', 'article:author');
       removeMeta('property', 'article:published_time');
 
+      const schemaType =
+        route.view === 'templates'
+          ? 'CollectionPage'
+          : route.view === 'privacy'
+            ? 'WebPage'
+            : 'Blog';
+
       upsertJsonLd({
         '@context': 'https://schema.org',
-        '@type': route.view === 'templates' ? 'CollectionPage' : 'Blog',
+        '@type': schemaType,
         name: title,
         url: canonicalUrl,
         inLanguage: 'pt-BR',
@@ -213,10 +229,20 @@ export function useSeo(route: AppRoute, activePost: Post | null) {
       });
     }
 
-    // Dispara page_view atualizado no Google Analytics 4
+    // Respeita a preferência de cookies do visitante antes de enviar page_view ao GA4
+    let analyticsAllowed = true;
+    try {
+      const consent = window.localStorage.getItem('laisraniele_cookie_consent');
+      if (consent === 'essential') {
+        analyticsAllowed = false;
+      }
+    } catch {
+      // Ignore storage errors
+    }
+
     const gtagFn = (window as Window & { gtag?: (...args: unknown[]) => void })
       .gtag;
-    if (typeof gtagFn === 'function') {
+    if (analyticsAllowed && typeof gtagFn === 'function') {
       gtagFn('event', 'page_view', {
         page_title: title,
         page_path: pagePath,

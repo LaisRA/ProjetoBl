@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from 'react';
 export type AppRoute =
   | { view: 'home' }
   | { view: 'article'; slug: string }
-  | { view: 'templates' };
+  | { view: 'templates' }
+  | { view: 'privacy' };
 
 function parseHash(hash: string): AppRoute {
   const cleaned = hash.replace(/^#/, '').trim();
@@ -13,6 +14,15 @@ function parseHash(hash: string): AppRoute {
 
   if (cleaned === '/templates' || cleaned === 'templates') {
     return { view: 'templates' };
+  }
+
+  if (
+    cleaned === '/privacidade' ||
+    cleaned === 'privacidade' ||
+    cleaned === '/politica-de-privacidade' ||
+    cleaned === 'politica-de-privacidade'
+  ) {
+    return { view: 'privacy' };
   }
 
   const articleMatch = cleaned.match(/^\/?artigo\/([^/?#]+)/);
