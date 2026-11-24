@@ -107,6 +107,464 @@ export const LINKS_SOCIAIS = {
 
 export const manualPosts: Post[] = [
   {
+    id: '7',
+    slug: 'planilha-financeira-2027-google-sheets-automatica',
+    titulo:
+      'Como Criar uma Planilha Financeira Automática para 2027 em 1 Clique (Google Sheets Grátis)',
+    resumo:
+      'Crie uma planilha de controle financeiro para 2027 no Google Sheets em 1 clique. Copie o código pronto em Apps Script (testado) e gere abas, fórmulas e dashboard automaticamente.',
+    categoria: 'Gestão Financeira',
+    data: '24 Nov 2026',
+    tempoLeitura: '7 min de leitura',
+    // Cole aqui o ID de 11 caracteres do vídeo do YouTube assim que publicar (ex: "W6Jh1k85fjY"):
+    youtubeId: '',
+    linkTemplate: '',
+    blocosDeConteudo: [
+      {
+        tipo: 'paragrafo',
+        texto:
+          'Começar o ano prometendo organizar o dinheiro é fácil; difícil é manter uma planilha funcionando quando você precisa perder horas criando fórmulas, arrumando gráficos quebrados e formatando células na mão.',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          'A boa notícia é que você não precisa saber Excel avançado nem pagar por aplicativos financeiros para ter um painel profissional em 2027. Usando um **código pronto em Google Apps Script** (criado com ajuda de IA e já testado), você constrói sua planilha inteira — com abas, cores, menus suspensos, fórmulas automáticas e gráfico — em **menos de 10 segundos**.',
+      },
+      {
+        tipo: 'subtitulo',
+        texto: 'O que essa planilha financeira de 2027 faz sozinha?',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          'Ao executar o código abaixo no seu Google Sheets, a planilha nasce pronta com:',
+      },
+      {
+        tipo: 'lista',
+        ordenada: false,
+        itens: [
+          '**Aba `Lancamentos`**: cabeçalho estilizado e congelado, formatação automática em Reais (`R$`), menus suspensos para Categorias, Tipo (Entrada/Saída) e Forma de Pagamento, além de cores automáticas (verde para entradas e vermelho para saídas).',
+          '**Aba `Dashboard 2027`**: visual limpo sem linhas de grade, 3 cartões de resumo automático (Total de Entradas, Total de Saídas e Saldo Atual), tabela de Gastos por Categoria com Total Geral e um Gráfico de Rosca que se atualiza em tempo real.',
+          '**Dados de teste**: 10 lançamentos fictícios de janeiro de 2027 para você testar tudo antes de colocar seus números reais.',
+        ],
+      },
+      {
+        tipo: 'subtitulo',
+        texto: 'Passo 1: Copie o código pronto (Apps Script)',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          'Clique no botão **Copiar** no bloco abaixo para pegar o script completo:',
+      },
+      {
+        tipo: 'codigo',
+        linguagem: 'Google Apps Script',
+        titulo: 'PlanilhaFinanceira2027.gs',
+        conteudo: `/**
+ * Gera automaticamente uma Planilha de Controle Financeiro Pessoal para 2027
+ * com aba de Lançamentos estruturada e Dashboard interativo.
+ */
+function criarPlanilhaFinanceira2027() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ui = SpreadsheetApp.getUi();
+
+  // =========================================================================
+  // 1. ESTRUTURA DE ABAS
+  // =========================================================================
+  const nomeAbaLancamentos = "Lancamentos";
+  const nomeAbaDashboard = "Dashboard 2027";
+
+  const abaTemp = ss.insertSheet("Temp_Setup_" + new Date().getTime());
+
+  const abasParaRemover = [
+    nomeAbaLancamentos,
+    "Lançamentos",
+    nomeAbaDashboard,
+    "Página1",
+    "Sheet1"
+  ];
+  abasParaRemover.forEach(nome => {
+    const aba = ss.getSheetByName(nome);
+    if (aba) ss.deleteSheet(aba);
+  });
+
+  const sheetDash = ss.insertSheet(nomeAbaDashboard, 0);
+  const sheetLanc = ss.insertSheet(nomeAbaLancamentos, 1);
+
+  ss.deleteSheet(abaTemp);
+  sheetDash.setHiddenGridlines(true);
+
+  // =========================================================================
+  // 2. ABA "LANÇAMENTOS" (aba nomeada "Lancamentos" para evitar problemas com acentos em fórmulas)
+  // =========================================================================
+  const cabecalhos = [["Data", "Descrição", "Categoria", "Tipo", "Forma de Pagamento", "Valor"]];
+  const rangeCabecalho = sheetLanc.getRange("A1:F1");
+
+  rangeCabecalho
+    .setValues(cabecalhos)
+    .setBackground("#1E293B")
+    .setFontColor("#FFFFFF")
+    .setFontWeight("bold")
+    .setFontFamily("Inter")
+    .setFontSize(10)
+    .setHorizontalAlignment("center")
+    .setVerticalAlignment("middle");
+
+  sheetLanc.setRowHeight(1, 35);
+  sheetLanc.setFrozenRows(1);
+
+  const categorias = [
+    "Moradia", "Alimentação", "Transporte", "Saúde",
+    "Lazer", "Educação", "Investimentos", "Salário", "Renda Extra"
+  ];
+  const tipos = ["Entrada", "Saída"];
+  const formasPagamento = ["Pix", "Cartão de Crédito", "Débito", "Dinheiro", "Boleto"];
+
+  const regraCategoria = SpreadsheetApp.newDataValidation()
+    .requireValueInList(categorias, true)
+    .setAllowInvalid(false)
+    .build();
+
+  const regraTipo = SpreadsheetApp.newDataValidation()
+    .requireValueInList(tipos, true)
+    .setAllowInvalid(false)
+    .build();
+
+  const regraPagamento = SpreadsheetApp.newDataValidation()
+    .requireValueInList(formasPagamento, true)
+    .setAllowInvalid(false)
+    .build();
+
+  sheetLanc.getRange("C2:C500").setDataValidation(regraCategoria);
+  sheetLanc.getRange("D2:D500").setDataValidation(regraTipo);
+  sheetLanc.getRange("E2:E500").setDataValidation(regraPagamento);
+
+  const rangeTipo = sheetLanc.getRange("D2:D500");
+
+  const regraEntrada = SpreadsheetApp.newConditionalFormatRule()
+    .whenTextEqualTo("Entrada")
+    .setBackground("#DCFCE7")
+    .setFontColor("#166534")
+    .setBold(true)
+    .setRanges([rangeTipo])
+    .build();
+
+  const regraSaida = SpreadsheetApp.newConditionalFormatRule()
+    .whenTextEqualTo("Saída")
+    .setBackground("#FEE2E2")
+    .setFontColor("#991B1B")
+    .setBold(true)
+    .setRanges([rangeTipo])
+    .build();
+
+  sheetLanc.setConditionalFormatRules([regraEntrada, regraSaida]);
+
+  sheetLanc.getRange("A2:A500").setNumberFormat("dd/mm/yyyy").setHorizontalAlignment("center");
+  sheetLanc.getRange("B2:B500").setHorizontalAlignment("left");
+  sheetLanc.getRange("C2:E500").setHorizontalAlignment("center");
+  sheetLanc.getRange("F2:F500").setNumberFormat("R$ #,##0.00").setHorizontalAlignment("right");
+  sheetLanc.getRange("A2:F500").setFontFamily("Inter").setFontSize(10).setVerticalAlignment("middle");
+
+  const dadosExemplo = [
+    [new Date(2027, 0, 5),  "Salário Mensal - Empresa",       "Salário",       "Entrada", "Pix",               6500.00],
+    [new Date(2027, 0, 6),  "Aluguel + Condomínio",           "Moradia",       "Saída",   "Boleto",            2150.00],
+    [new Date(2027, 0, 8),  "Supermercado Mensal",            "Alimentação",   "Saída",   "Cartão de Crédito",  845.90],
+    [new Date(2027, 0, 10), "Aporte Tesouro Selic",            "Investimentos", "Saída",   "Pix",               1000.00],
+    [new Date(2027, 0, 12), "Abastecimento / Combustível",    "Transporte",    "Saída",   "Débito",             220.00],
+    [new Date(2027, 0, 15), "Consultoria Freelance UI/UX",    "Renda Extra",   "Entrada", "Pix",               1200.00],
+    [new Date(2027, 0, 18), "Plano de Saúde + Farmácia",      "Saúde",         "Saída",   "Cartão de Crédito",  480.50],
+    [new Date(2027, 0, 21), "Curso de Especialização Online", "Educação",      "Saída",   "Cartão de Crédito",  199.90],
+    [new Date(2027, 0, 25), "Jantar e Cinema Fim de Semana",  "Lazer",         "Saída",   "Cartão de Crédito",  260.00],
+    [new Date(2027, 0, 28), "Conta de Energia e Internet",    "Moradia",       "Saída",   "Boleto",             310.40]
+  ];
+
+  sheetLanc.getRange(2, 1, dadosExemplo.length, 6).setValues(dadosExemplo);
+
+  sheetLanc.getRange("A1:F11").setBorder(true, true, true, true, true, true, "#E2E8F0", SpreadsheetApp.BorderStyle.SOLID);
+  sheetLanc.autoResizeColumns(1, 6);
+  for (let col = 1; col <= 6; col++) {
+    sheetLanc.setColumnWidth(col, sheetLanc.getColumnWidth(col) + 25);
+  }
+
+  // =========================================================================
+  // 3. ABA "DASHBOARD 2027"
+  // =========================================================================
+  sheetDash.getRange("A1:J35").setBackground("#F8FAFC").setFontFamily("Inter");
+
+  const rangeTitulo = sheetDash.getRange("B2:H3");
+  rangeTitulo.merge()
+    .setValue("CONTROLE FINANCEIRO 2027")
+    .setBackground("#1E293B")
+    .setFontColor("#FFFFFF")
+    .setFontSize(18)
+    .setFontWeight("bold")
+    .setHorizontalAlignment("center")
+    .setVerticalAlignment("middle");
+
+  sheetDash.setRowHeight(1, 20);
+  sheetDash.setRowHeight(2, 25);
+  sheetDash.setRowHeight(3, 25);
+  sheetDash.setRowHeight(4, 20);
+
+  function criarCardKPI(colInicio, titulo, formula, corFundo, corTextoTitulo, corValor) {
+    const rangeLabel = sheetDash.getRange(5, colInicio, 1, 2);
+    const rangeValor = sheetDash.getRange(6, colInicio, 2, 2);
+    const rangeCardTotal = sheetDash.getRange(5, colInicio, 3, 2);
+
+    rangeLabel.merge()
+      .setValue(titulo)
+      .setBackground(corFundo)
+      .setFontColor(corTextoTitulo)
+      .setFontSize(10)
+      .setFontWeight("bold")
+      .setHorizontalAlignment("center")
+      .setVerticalAlignment("bottom");
+
+    rangeValor.merge()
+      .setFormula(formula)
+      .setBackground(corFundo)
+      .setFontColor(corValor)
+      .setFontSize(18)
+      .setFontWeight("bold")
+      .setNumberFormat("R$ #,##0.00")
+      .setHorizontalAlignment("center")
+      .setVerticalAlignment("middle");
+
+    rangeCardTotal.setBorder(true, true, true, true, false, false, "#CBD5E1", SpreadsheetApp.BorderStyle.SOLID);
+  }
+
+  sheetDash.setRowHeight(5, 28);
+  sheetDash.setRowHeight(6, 25);
+  sheetDash.setRowHeight(7, 25);
+
+  // Cartão 1: Total de Entradas (B6)
+  criarCardKPI(
+    2,
+    "TOTAL DE ENTRADAS",
+    '=SUMIF(' + nomeAbaLancamentos + '!D2:D500; "Entrada"; ' + nomeAbaLancamentos + '!F2:F500)',
+    "#FFFFFF", "#475569", "#16A34A"
+  );
+
+  // Cartão 2: Total de Saídas (E6)
+  criarCardKPI(
+    5,
+    "TOTAL DE SAÍDAS",
+    '=SUMIF(' + nomeAbaLancamentos + '!D2:D500; "Saída"; ' + nomeAbaLancamentos + '!F2:F500)',
+    "#FFFFFF", "#475569", "#DC2626"
+  );
+
+  // Cartão 3: Saldo Atual (H6)
+  criarCardKPI(
+    8,
+    "SALDO ATUAL",
+    "=B6-E6",
+    "#FFFFFF", "#475569", "#1E293B"
+  );
+
+  sheetDash.setRowHeight(8, 25);
+
+  const tituloTabela = sheetDash.getRange("B9:C9");
+  tituloTabela.merge()
+    .setValue("GASTOS POR CATEGORIA")
+    .setBackground("#1E293B")
+    .setFontColor("#FFFFFF")
+    .setFontSize(11)
+    .setFontWeight("bold")
+    .setHorizontalAlignment("center")
+    .setVerticalAlignment("middle");
+  sheetDash.setRowHeight(9, 32);
+
+  sheetDash.getRange("B10:C10")
+    .setValues([["Categoria", "Total Gasto"]])
+    .setBackground("#E2E8F0")
+    .setFontColor("#1E293B")
+    .setFontWeight("bold")
+    .setHorizontalAlignment("center")
+    .setVerticalAlignment("middle");
+  sheetDash.setRowHeight(10, 26);
+
+  const categoriasDespesa = [
+    ["Moradia"],
+    ["Alimentação"],
+    ["Transporte"],
+    ["Saúde"],
+    ["Lazer"],
+    ["Educação"],
+    ["Investimentos"]
+  ];
+
+  const linhaInicialCat = 11;
+  const qtdCat = categoriasDespesa.length;
+
+  sheetDash.getRange(linhaInicialCat, 2, qtdCat, 1)
+    .setValues(categoriasDespesa)
+    .setBackground("#FFFFFF")
+    .setFontColor("#334155")
+    .setFontWeight("medium")
+    .setHorizontalAlignment("left")
+    .setVerticalAlignment("middle");
+
+  const formulasCategorias = [];
+  for (let i = 0; i < qtdCat; i++) {
+    const linhaAtual = linhaInicialCat + i;
+    formulasCategorias.push([
+      \`=SUMIFS(\${nomeAbaLancamentos}!$F$2:$F$500; \${nomeAbaLancamentos}!$C$2:$C$500; B\${linhaAtual}; \${nomeAbaLancamentos}!$D$2:$D$500; "Saída")\`
+    ]);
+    sheetDash.setRowHeight(linhaAtual, 25);
+  }
+
+  sheetDash.getRange(linhaInicialCat, 3, qtdCat, 1)
+    .setFormulas(formulasCategorias)
+    .setBackground("#FFFFFF")
+    .setFontColor("#0F172A")
+    .setNumberFormat("R$ #,##0.00")
+    .setHorizontalAlignment("right")
+    .setVerticalAlignment("middle");
+
+  const linhaTotalTabela = linhaInicialCat + qtdCat;
+  sheetDash.getRange(linhaTotalTabela, 2).setValue("TOTAL GERAL");
+  sheetDash.getRange(linhaTotalTabela, 3).setFormula(\`=SUM(C\${linhaInicialCat}:C\${linhaTotalTabela - 1})\`);
+
+  sheetDash.getRange(linhaTotalTabela, 2, 1, 2)
+    .setBackground("#F1F5F9")
+    .setFontColor("#1E293B")
+    .setFontWeight("bold")
+    .setVerticalAlignment("middle");
+  sheetDash.getRange(linhaTotalTabela, 3).setNumberFormat("R$ #,##0.00");
+  sheetDash.setRowHeight(linhaTotalTabela, 28);
+
+  sheetDash.getRange(9, 2, qtdCat + 3, 2)
+    .setBorder(true, true, true, true, true, true, "#CBD5E1", SpreadsheetApp.BorderStyle.SOLID);
+
+  sheetDash.setColumnWidth(1, 25);
+  sheetDash.setColumnWidth(2, 160);
+  sheetDash.setColumnWidth(3, 140);
+  sheetDash.setColumnWidth(4, 25);
+  sheetDash.setColumnWidth(5, 140);
+  sheetDash.setColumnWidth(6, 140);
+  sheetDash.setColumnWidth(7, 25);
+  sheetDash.setColumnWidth(8, 140);
+  sheetDash.setColumnWidth(9, 140);
+  sheetDash.setColumnWidth(10, 25);
+
+  SpreadsheetApp.flush();
+
+  const rangeDadosGrafico = sheetDash.getRange(linhaInicialCat, 2, qtdCat, 2);
+
+  const chart = sheetDash.newChart()
+    .setChartType(Charts.ChartType.PIE)
+    .addRange(rangeDadosGrafico)
+    .setNumHeaders(0)
+    .setOption("title", "Distribuição de Gastos por Categoria")
+    .setOption("pieHole", 0.5)
+    .setOption("colors", ["#1E293B", "#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#06B6D4"])
+    .setOption("backgroundColor", "#FFFFFF")
+    .setOption("legend", { position: "right", textStyle: { color: "#334155", fontSize: 11 } })
+    .setOption("titleTextStyle", { color: "#1E293B", fontSize: 13, bold: true })
+    .setOption("chartArea", { left: 20, top: 45, width: "90%", height: "75%" })
+    .setPosition(9, 5, 0, 0)
+    .setOption("width", 610)
+    .setOption("height", 265)
+    .build();
+
+  sheetDash.insertChart(chart);
+
+  ss.setActiveSheet(sheetDash);
+
+  ui.alert("Sucesso!", "Sua Planilha Financeira 2027 foi criada com sucesso!", ui.ButtonSet.OK);
+}`,
+      },
+      {
+        tipo: 'subtitulo',
+        texto: 'Passo 2: Cole e execute no Google Sheets',
+      },
+      {
+        tipo: 'lista',
+        ordenada: true,
+        itens: [
+          'Acesse `sheets.new` para abrir uma planilha em branco no Google Sheets.',
+          'No menu superior, clique em **Extensões → Apps Script**.',
+          'Na tela que abrir, apague todo o texto padrão (`function myFunction() { }`).',
+          'Cole o código que você copiou no Passo 1.',
+          'Clique no ícone de **Salvar projeto** (disquete) no topo e depois clique em **Executar**.',
+        ],
+      },
+      {
+        tipo: 'subtitulo',
+        texto: 'Passo 3: Como liberar a permissão do Google (sem medo)',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          'Na primeira vez que você rodar um script próprio, o Google exibirá um aviso de segurança padrão. Veja como liberar em segundos:',
+      },
+      {
+        tipo: 'lista',
+        ordenada: true,
+        itens: [
+          'Clique em **Revisar permissões** e selecione sua conta Google.',
+          'Na tela *"O Google não verificou este app"*, clique em **Avançado** (no canto inferior esquerdo).',
+          'Clique em **Acessar Projeto sem título (não seguro)**.',
+          'Clique em **Permitir**.',
+        ],
+      },
+      {
+        tipo: 'dica',
+        titulo: 'Por que esse aviso aparece?',
+        texto:
+          'Porque o script está rodando diretamente dentro da sua própria planilha e não passou por uma loja pública de aplicativos. Ele só tem acesso a esse arquivo.',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          'Volte para a aba da planilha e clique em **OK** na mensagem *"Sua Planilha Financeira 2027 foi criada com sucesso!"*. Quando for usar para valer, basta apagar as 10 linhas de exemplo na aba `Lancamentos` (linhas 2 a 11) e registrar os seus dados.',
+      },
+      {
+        tipo: 'subtitulo',
+        texto: 'Bônus: Use a IA como seu consultor financeiro mensal',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          'No último dia de cada mês, selecione a tabela de **Gastos por Categoria** na aba `Dashboard 2027`, copie (`Ctrl + C`) e cole no **Google Gemini** junto com este comando:',
+      },
+      {
+        tipo: 'codigo',
+        linguagem: 'Prompt Gemini',
+        titulo: 'Consultor financeiro mensal no Google Gemini',
+        conteudo: `Atue como um consultor financeiro prático e direto. Abaixo está o resumo dos meus gastos deste mês. Analise os números, aponte os 2 maiores vazamentos de dinheiro do meu orçamento e me dê 3 ações concretas e realistas para reduzir esses custos no mês que vem.`,
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          'Em segundos, você terá um plano de ação baseado na sua realidade financeira, sem precisar pagar por consultoria ou aplicativos por assinatura.',
+      },
+      {
+        tipo: 'cta',
+        titulo: 'Quer levar o Google Workspace com Gemini para o seu negócio?',
+        texto:
+          'Conheça os planos oficiais do Google Workspace pelo meu link de indicação. Eu também tenho **códigos promocionais exclusivos** — me chame no WhatsApp **(37) 99904-6824** para garantir o seu desconto.',
+        textoBotao: 'Conhecer o Google Workspace',
+        link: 'https://sharegoogleworkspace.advocate.impact.com/mzZ2zF7',
+      },
+      {
+        tipo: 'subtitulo',
+        texto: 'Perguntas Frequentes',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          '**Funciona no celular?** Para rodar o Apps Script pela primeira vez, você precisa de um computador. Depois que a planilha é criada, você pode abrir e lançar seus gastos normalmente pelo aplicativo do Google Sheets no celular.',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          '**Posso mudar as categorias?** Sim! Basta editar os nomes dentro da lista `categorias` e `categoriasDespesa` no código antes de clicar em **Executar** novamente.',
+      },
+    ],
+  },
+  {
     id: '6',
     slug: 'app-web-financas-pessoais-google-planilhas',
     titulo:
