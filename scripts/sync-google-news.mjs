@@ -216,7 +216,7 @@ Retorne APENAS um JSON válido com esta estrutura exata:
     youtubeId: '',
     fonteUrl: item.link,
     fonteNome: item.fonteNome,
-    linkTemplate: item.link,
+    linkTemplate: '',
     tituloTemplate: String(
       parsed.tituloTemplate || `Guia Oficial: ${item.fonteNome}`
     ),
@@ -301,7 +301,7 @@ function buildFallbackPost(item) {
     youtubeId: '',
     fonteUrl: item.link,
     fonteNome: item.fonteNome,
-    linkTemplate: item.link,
+    linkTemplate: '',
     tituloTemplate: `Comunicado Oficial — ${item.fonteNome}`,
     descricaoTemplate:
       'Acesse a publicação oficial do Google para conferir datas de liberação e requisitos da conta.',

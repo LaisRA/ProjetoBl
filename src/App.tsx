@@ -11,7 +11,6 @@ import { CookieConsent } from './components/CookieConsent';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { PrivacyView } from './components/PrivacyView';
-import { TemplatesView } from './components/TemplatesView';
 import { WorkspaceTopBar } from './components/WorkspaceBanner';
 import { CATEGORIAS, posts, type Categoria } from './data/posts';
 import { useHashRoute } from './hooks/useHashRoute';
@@ -253,10 +252,6 @@ export default function App() {
               </button>
             </div>
           ))}
-
-        {route.view === 'templates' && (
-          <TemplatesView posts={posts} onOpenPost={openPost} />
-        )}
 
         {route.view === 'privacy' && (
           <PrivacyView

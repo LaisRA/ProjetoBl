@@ -5,7 +5,7 @@ import type { AppRoute } from './useHashRoute';
 const SITE_NAME = 'Lais Raniele';
 const DEFAULT_TITLE = 'Lais Raniele — IA, Gestão Financeira e Automação Google';
 const DEFAULT_DESCRIPTION =
-  'Tutoriais práticos de Inteligência Artificial, Gestão Financeira e Automação Comercial no Ecossistema Google, com templates e scripts prontos.';
+  'Tutoriais práticos de Inteligência Artificial, Gestão Financeira e Automação Comercial no Ecossistema Google, com fórmulas, prompts e scripts prontos.';
 const DEFAULT_OG_IMAGE_PATH = '/src/assets/images/og_lais_raniele_1795476967262.jpg';
 
 const PT_MONTHS: Record<string, string> = {
@@ -126,15 +126,6 @@ export function useSeo(route: AppRoute, activePost: Post | null) {
       ogImage = resolvePostImage(activePost);
       ogImageAlt = activePost.titulo;
       pagePath = `/artigo/${activePost.slug}`;
-    } else if (route.view === 'templates') {
-      title = `Templates Prontos do Ecossistema Google | ${SITE_NAME}`;
-      description =
-        'Baixe e copie planilhas do Google Sheets, scripts em Apps Script e prompts prontos para finanças, vendas e automação comercial.';
-      canonicalUrl = `${baseUrl}#/templates`;
-      ogType = 'website';
-      ogImage = defaultImage;
-      ogImageAlt = title;
-      pagePath = '/templates';
     } else if (route.view === 'privacy') {
       title = `Política de Privacidade e Cookies | ${SITE_NAME}`;
       description =
@@ -206,12 +197,7 @@ export function useSeo(route: AppRoute, activePost: Post | null) {
       removeMeta('property', 'article:author');
       removeMeta('property', 'article:published_time');
 
-      const schemaType =
-        route.view === 'templates'
-          ? 'CollectionPage'
-          : route.view === 'privacy'
-            ? 'WebPage'
-            : 'Blog';
+      const schemaType = route.view === 'privacy' ? 'WebPage' : 'Blog';
 
       upsertJsonLd({
         '@context': 'https://schema.org',

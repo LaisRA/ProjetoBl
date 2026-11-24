@@ -13,7 +13,7 @@
  *          - `categoria`: escolha entre "Gestão Financeira", "Automação Comercial", "IA & Google" ou "Últimas Atualizações"
  *          - `youtubeId`: (opcional) cole apenas o código de 11 caracteres do vídeo
  *            (ex: em youtube.com/watch?v=ABC123xyz00, use "ABC123xyz00"). Deixe "" se não tiver vídeo.
- *          - `linkTemplate`: cole o link da sua planilha, documento ou página de download.
+ *          - `linkTemplate`: (opcional) cole o link do template apenas quando o artigo tiver um arquivo pronto para baixar; deixe "" para ocultar a caixa de template.
  *
  * PASSO 3: Edite o array `blocosDeConteudo` usando os tipos disponíveis:
  *          - { tipo: "subtitulo", texto: "..." }
@@ -80,10 +80,10 @@ export interface Post {
   imagemOg?: string;
   fonteUrl?: string;
   fonteNome?: string;
-  linkTemplate: string;
-  tituloTemplate: string;
-  descricaoTemplate: string;
-  itensTemplate: string[];
+  linkTemplate?: string;
+  tituloTemplate?: string;
+  descricaoTemplate?: string;
+  itensTemplate?: string[];
   blocosDeConteudo: BlocoConteudo[];
 }
 
@@ -117,7 +117,7 @@ export const manualPosts: Post[] = [
     data: '23 Nov 2026',
     tempoLeitura: '8 min de leitura',
     youtubeId: 'W6Jh1k85fjY',
-    linkTemplate: 'https://laisraniele.com.br/templates/app-web-financas-sheets',
+    linkTemplate: '',
     tituloTemplate: 'App Web de Finanças Pessoais + Planilha Google Integrada',
     descricaoTemplate:
       'Receba a planilha pronta com o código completo de Apps Script e a interface HTML responsiva já configurada para publicar seu app financeiro em menos de 5 minutos.',
@@ -401,7 +401,7 @@ function buscarResumoFinanceiro() {
     tempoLeitura: '7 min de leitura',
     // Cole aqui o ID de 11 caracteres do YouTube (ex: "dQw4w9WgXcQ") para exibir o vídeo no topo:
     youtubeId: '',
-    linkTemplate: 'https://laisraniele.com.br/templates/planilha-financas-gemini',
+    linkTemplate: '',
     tituloTemplate: 'Planilha de Controle Financeiro com IA no Google Sheets',
     descricaoTemplate:
       'Baixe a estrutura pronta com as abas Lançamentos, Resumo Mensal e os prompts configurados para classificar gastos e encontrar vazamentos no orçamento em segundos.',
@@ -529,7 +529,7 @@ Meus dados:
     data: '12 Nov 2026',
     tempoLeitura: '9 min de leitura',
     youtubeId: '',
-    linkTemplate: 'https://laisraniele.com.br/templates/gerador-propostas-pdf',
+    linkTemplate: '',
     tituloTemplate: 'Kit Gerador de Propostas PDF (Forms + Docs + Apps Script)',
     descricaoTemplate:
       'Receba o modelo de documento no Google Docs com todos os marcadores configurados, o formulário de briefing e o código Apps Script pronto para copiar e ativar.',
@@ -701,7 +701,7 @@ function chamarGeminiParaProposta(cliente, empresa, desafio, servico) {
     data: '05 Nov 2026',
     tempoLeitura: '6 min de leitura',
     youtubeId: '',
-    linkTemplate: 'https://laisraniele.com.br/templates/kit-gem-vendas-atendimento',
+    linkTemplate: '',
     tituloTemplate: 'Pacote de Instruções + Base de Conhecimento para Gems de Vendas',
     descricaoTemplate:
       'Copie o documento modelo de Base de Conhecimento (FAQ, tabela de preços e objeções) formatado para fazer upload no seu Gem e dobrar a qualidade das respostas.',
@@ -804,7 +804,7 @@ Quando eu colar a mensagem de um cliente e o canal (ex: "WhatsApp: o cliente dis
     data: '28 Out 2026',
     tempoLeitura: '8 min de leitura',
     youtubeId: '',
-    linkTemplate: 'https://laisraniele.com.br/templates/crm-sheets-follow-up-ia',
+    linkTemplate: '',
     tituloTemplate: 'Planilha CRM Comercial + Script de Follow-up com Gemini',
     descricaoTemplate:
       'Copie o CRM completo no Google Sheets com formatação condicional de leads atrasados, menu personalizado "IA Comercial" e gerador automático de rascunhos no Gmail.',
@@ -986,7 +986,7 @@ function gerarEmailGemini(apiKey, info) {
     data: '21 Out 2026',
     tempoLeitura: '6 min de leitura',
     youtubeId: '',
-    linkTemplate: 'https://laisraniele.com.br/templates/radar-tendencias-trends-gemini',
+    linkTemplate: '',
     tituloTemplate: 'Radar de Tendências & Pauta de Conteúdo (Google Sheets + Prompts)',
     descricaoTemplate:
       'Planilha pronta para registrar termos em ascensão do Google Trends, calcular prioridade de pauta e transformar buscas reais em vídeos, artigos e ofertas.',

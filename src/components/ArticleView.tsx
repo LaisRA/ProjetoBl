@@ -305,58 +305,66 @@ export function ArticleView({
           )}
         </div>
 
-        {/* End-of-Article Highlight CTA Box (Template Pronto) */}
-        <section
-          aria-labelledby="template-cta-heading"
-          className="mt-12 rounded-2xl border border-[#7C3AED]/30 bg-[#FFFFFF] p-6 sm:p-8 dark:border-[#8B5CF6]/35 dark:bg-[#161321]"
-        >
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-            <div className="max-w-xl">
-              <div className="inline-flex items-center gap-2 rounded-md bg-[#EDE9FE] px-2.5 py-1 text-xs font-medium text-[#6D28D9] dark:bg-[#8B5CF6]/16 dark:text-[#C4B5FD]">
-                <FileSpreadsheet className="h-3.5 w-3.5" aria-hidden="true" />
-                <span>Template Pronto para Copiar</span>
+        {/* Optional End-of-Article Highlight CTA Box (exibido apenas quando o artigo tiver linkTemplate) */}
+        {post.linkTemplate && post.linkTemplate.trim() !== '' && (
+          <section
+            aria-labelledby="template-cta-heading"
+            className="mt-12 rounded-2xl border border-[#7C3AED]/30 bg-[#FFFFFF] p-6 sm:p-8 dark:border-[#8B5CF6]/35 dark:bg-[#161321]"
+          >
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+              <div className="max-w-xl">
+                <div className="inline-flex items-center gap-2 rounded-md bg-[#EDE9FE] px-2.5 py-1 text-xs font-medium text-[#6D28D9] dark:bg-[#8B5CF6]/16 dark:text-[#C4B5FD]">
+                  <FileSpreadsheet className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>Template Pronto para Copiar</span>
+                </div>
+
+                {post.tituloTemplate && (
+                  <h2
+                    id="template-cta-heading"
+                    className="mt-3 font-display text-xl sm:text-2xl font-bold tracking-tight text-[#18181B] dark:text-[#F3F4F6]"
+                  >
+                    {post.tituloTemplate}
+                  </h2>
+                )}
+
+                {post.descricaoTemplate && (
+                  <p className="mt-2.5 text-sm sm:text-[15px] leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
+                    {post.descricaoTemplate}
+                  </p>
+                )}
+
+                {post.itensTemplate && post.itensTemplate.length > 0 && (
+                  <ul className="mt-4 space-y-2 text-sm text-[#52525B] dark:text-[#9CA3AF]">
+                    {post.itensTemplate.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5">
+                        <Check
+                          className="mt-0.5 h-4 w-4 shrink-0 text-[#7C3AED] dark:text-[#8B5CF6]"
+                          aria-hidden="true"
+                        />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
-
-              <h2
-                id="template-cta-heading"
-                className="mt-3 font-display text-xl sm:text-2xl font-bold tracking-tight text-[#18181B] dark:text-[#F3F4F6]"
-              >
-                {post.tituloTemplate}
-              </h2>
-
-              <p className="mt-2.5 text-sm sm:text-[15px] leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
-                {post.descricaoTemplate}
-              </p>
-
-              <ul className="mt-4 space-y-2 text-sm text-[#52525B] dark:text-[#9CA3AF]">
-                {post.itensTemplate.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5">
-                    <Check
-                      className="mt-0.5 h-4 w-4 shrink-0 text-[#7C3AED] dark:text-[#8B5CF6]"
-                      aria-hidden="true"
-                    />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
-          </div>
 
-          <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-[#E4E4E7] pt-6 dark:border-[#2A243D]">
-            <a
-              href={post.linkTemplate}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-11 items-center gap-2 rounded-lg bg-[#7C3AED] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#6D28D9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] whitespace-nowrap"
-            >
-              <span>Acessar Template Pronto</span>
-              <ExternalLink className="h-4 w-4" aria-hidden="true" />
-            </a>
-            <span className="text-xs text-[#52525B] dark:text-[#9CA3AF]">
-              Compatível com contas Google gratuitas e Workspace.
-            </span>
-          </div>
-        </section>
+            <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-[#E4E4E7] pt-6 dark:border-[#2A243D]">
+              <a
+                href={post.linkTemplate}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-11 items-center gap-2 rounded-lg bg-[#7C3AED] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#6D28D9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] whitespace-nowrap"
+              >
+                <span>Acessar Template Pronto</span>
+                <ExternalLink className="h-4 w-4" aria-hidden="true" />
+              </a>
+              <span className="text-xs text-[#52525B] dark:text-[#9CA3AF]">
+                Compatível com contas Google gratuitas e Workspace.
+              </span>
+            </div>
+          </section>
+        )}
 
         {/* Previous / Next Article Navigation */}
         {(prevPost || nextPost) && (

@@ -3,17 +3,12 @@ import { useCallback, useEffect, useState } from 'react';
 export type AppRoute =
   | { view: 'home' }
   | { view: 'article'; slug: string }
-  | { view: 'templates' }
   | { view: 'privacy' };
 
 function parseHash(hash: string): AppRoute {
   const cleaned = hash.replace(/^#/, '').trim();
   if (!cleaned || cleaned === '/') {
     return { view: 'home' };
-  }
-
-  if (cleaned === '/templates' || cleaned === 'templates') {
-    return { view: 'templates' };
   }
 
   if (
