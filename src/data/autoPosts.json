@@ -1,1 +1,114 @@
-[]
+[
+  {
+    "id": "auto-1795639649508-988",
+    "slug": "rooms-more-actions-panel-reordering",
+    "titulo": "Novidade Google: Rooms \"More actions\" Panel Reordering",
+    "resumo": "Starting on December 02, 2026, we are updating the order of options within the \"More actions\" panel on Google Meet hardware touch controllers. This update introduces improvements b",
+    "categoria": "Últimas Atualizações",
+    "data": "25 Nov 2026",
+    "tempoLeitura": "3 min de leitura",
+    "youtubeId": "",
+    "fonteUrl": "http://workspaceupdates.googleblog.com/2026/11/rooms-more-actions-panel-reordering.html",
+    "fonteNome": "Google Workspace Updates",
+    "linkTemplate": "",
+    "tituloTemplate": "Comunicado Oficial — Google Workspace Updates",
+    "descricaoTemplate": "Acesse a publicação oficial do Google para conferir datas de liberação e requisitos da conta.",
+    "itensTemplate": [
+      "Nota oficial completa em inglês/português no blog do Google",
+      "Detalhes de disponibilidade para contas pessoais e Workspace",
+      "Prompt pronto acima para adaptar ao seu fluxo de trabalho"
+    ],
+    "blocosDeConteudo": [
+      {
+        "tipo": "paragrafo",
+        "texto": "O **Google Workspace Updates** publicou uma novidade relevante para quem usa ferramentas do Google no trabalho e nos negócios: **Rooms \"More actions\" Panel Reordering**."
+      },
+      {
+        "tipo": "subtitulo",
+        "texto": "Resumo do anúncio oficial"
+      },
+      {
+        "tipo": "paragrafo",
+        "texto": "Starting on December 02, 2026, we are updating the order of options within the \"More actions\" panel on Google Meet hardware touch controllers. This update introduces improvements based on usage patterns and user feedback, prioritizing high-frequency actions so room participants can access essential controls faster and with less scrolling. Key adjustments in..."
+      },
+      {
+        "tipo": "subtitulo",
+        "texto": "Prompt para explorar essa novidade com o Gemini"
+      },
+      {
+        "tipo": "codigo",
+        "linguagem": "Prompt Gemini",
+        "titulo": "Como aplicar esta atualização na prática",
+        "conteudo": "Explique em português do Brasil, de forma prática e passo a passo, como posso usar a novidade \"Rooms \"More actions\" Panel Reordering\" do Google para ganhar produtividade em finanças, vendas ou automação no Google Workspace. Inclua 3 casos de uso reais."
+      },
+      {
+        "tipo": "dica",
+        "titulo": "Rascunho automático para revisão",
+        "texto": "Configure o secret `GEMINI_API_KEY` (plano gratuito do Google AI Studio) nas configurações do seu repositório GitHub para que os próximos artigos sejam traduzidos e estruturados automaticamente em português completo."
+      },
+      {
+        "tipo": "cta",
+        "titulo": "Quer usar o Google Workspace + Gemini no seu negócio?",
+        "texto": "Conheça os planos oficiais do Google Workspace pelo meu link de indicação. Eu também tenho **códigos promocionais exclusivos** — me chame no WhatsApp **(37) 99904-6824** para garantir o seu desconto.",
+        "textoBotao": "Conhecer o Google Workspace",
+        "link": "https://sharegoogleworkspace.advocate.impact.com/mzZ2zF7"
+      }
+    ]
+  },
+  {
+    "id": "auto-1795639649509-115",
+    "slug": "simplifying-agent-access-while-keeping-organizations-in-control-mcp-serv",
+    "titulo": "Novidade Google: Simplifying agent access while keeping organizations in control: MCP servers, CLI, standardized usage tiers, and admin policies",
+    "resumo": "As AI agents transform how people work, we want to make it simple for developers to build agentic workflows while keeping organizations in control of their data in Google Workspace",
+    "categoria": "Últimas Atualizações",
+    "data": "24 Nov 2026",
+    "tempoLeitura": "3 min de leitura",
+    "youtubeId": "",
+    "fonteUrl": "http://workspaceupdates.googleblog.com/2026/11/mcp-servers-cli-standardized-usage-tiers-now-available.html",
+    "fonteNome": "Google Workspace Updates",
+    "linkTemplate": "",
+    "tituloTemplate": "Comunicado Oficial — Google Workspace Updates",
+    "descricaoTemplate": "Acesse a publicação oficial do Google para conferir datas de liberação e requisitos da conta.",
+    "itensTemplate": [
+      "Nota oficial completa em inglês/português no blog do Google",
+      "Detalhes de disponibilidade para contas pessoais e Workspace",
+      "Prompt pronto acima para adaptar ao seu fluxo de trabalho"
+    ],
+    "blocosDeConteudo": [
+      {
+        "tipo": "paragrafo",
+        "texto": "O **Google Workspace Updates** publicou uma novidade relevante para quem usa ferramentas do Google no trabalho e nos negócios: **Simplifying agent access while keeping organizations in control: MCP servers, CLI, standardized usage tiers, and admin policies**."
+      },
+      {
+        "tipo": "subtitulo",
+        "texto": "Resumo do anúncio oficial"
+      },
+      {
+        "tipo": "paragrafo",
+        "texto": "As AI agents transform how people work, we want to make it simple for developers to build agentic workflows while keeping organizations in control of their data in Google Workspace. We are making Workspace Model Context Protocol (MCP) servers and the official Workspace CLI generally available alongside standardized usage tiers to simplify how developers buil..."
+      },
+      {
+        "tipo": "subtitulo",
+        "texto": "Prompt para explorar essa novidade com o Gemini"
+      },
+      {
+        "tipo": "codigo",
+        "linguagem": "Prompt Gemini",
+        "titulo": "Como aplicar esta atualização na prática",
+        "conteudo": "Explique em português do Brasil, de forma prática e passo a passo, como posso usar a novidade \"Simplifying agent access while keeping organizations in control: MCP servers, CLI, standardized usage tiers, and admin policies\" do Google para ganhar produtividade em finanças, vendas ou automação no Google Workspace. Inclua 3 casos de uso reais."
+      },
+      {
+        "tipo": "dica",
+        "titulo": "Rascunho automático para revisão",
+        "texto": "Configure o secret `GEMINI_API_KEY` (plano gratuito do Google AI Studio) nas configurações do seu repositório GitHub para que os próximos artigos sejam traduzidos e estruturados automaticamente em português completo."
+      },
+      {
+        "tipo": "cta",
+        "titulo": "Quer usar o Google Workspace + Gemini no seu negócio?",
+        "texto": "Conheça os planos oficiais do Google Workspace pelo meu link de indicação. Eu também tenho **códigos promocionais exclusivos** — me chame no WhatsApp **(37) 99904-6824** para garantir o seu desconto.",
+        "textoBotao": "Conhecer o Google Workspace",
+        "link": "https://sharegoogleworkspace.advocate.impact.com/mzZ2zF7"
+      }
+    ]
+  }
+]
