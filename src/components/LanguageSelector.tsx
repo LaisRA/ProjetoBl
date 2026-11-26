@@ -51,7 +51,7 @@ export function LanguageSelector({
         aria-expanded={open}
         aria-label="Selecionar idioma do site"
         title="Idioma / Language"
-        className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-[#E4E4E7] bg-[#FFFFFF] px-2.5 text-xs font-medium text-[#18181B] transition-colors duration-150 hover:border-[#7C3AED]/50 hover:text-[#7C3AED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:border-[#2A243D] dark:bg-[#161321] dark:text-[#F3F4F6] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#C4B5FD] dark:focus-visible:outline-[#8B5CF6] whitespace-nowrap shrink-0 cursor-pointer"
+        className="inline-flex h-9 items-center gap-1 rounded-lg border border-[#E4E4E7] bg-[#FFFFFF] px-2 text-xs font-medium text-[#18181B] transition-colors duration-150 hover:border-[#7C3AED]/50 hover:text-[#7C3AED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] sm:h-10 sm:gap-1.5 sm:px-2.5 dark:border-[#2A243D] dark:bg-[#161321] dark:text-[#F3F4F6] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#C4B5FD] dark:focus-visible:outline-[#8B5CF6] whitespace-nowrap shrink-0 cursor-pointer"
       >
         <Globe
           className="h-3.5 w-3.5 text-[#52525B] dark:text-[#9CA3AF]"

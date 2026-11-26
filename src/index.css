@@ -62,6 +62,7 @@
 /* Keep Google Translate UI invisible so our custom minimalist switcher controls language */
 body {
   top: 0 !important;
+  overflow-x: clip;
 }
 
 .goog-te-banner-frame,

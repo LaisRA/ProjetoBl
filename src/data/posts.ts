@@ -101,6 +101,119 @@ export const LINKS_SOCIAIS = {
 
 export const posts: Post[] = [
   {
+    id: '8',
+    slug: 'planilhalab-app-gratuito-estudar-excel-offline',
+    titulo:
+      'PlanilhaLab: o aplicativo gratuito e offline para estudar Excel do básico ao avançado',
+    resumo:
+      'Conheça o PlanilhaLab, app gratuito e offline para praticar Excel com mini planilha interativa, gerador de dados fictícios, guia de fórmulas, timer de foco e anotações. Disponível atualmente apenas em português.',
+    categoria: 'Gestão Financeira',
+    data: '26 Nov 2026',
+    tempoLeitura: '5 min de leitura',
+    youtubeId: '',
+    linkTemplate: '',
+    blocosDeConteudo: [
+      {
+        tipo: 'paragrafo',
+        texto:
+          'Quem tenta aprender Excel sozinho quase sempre esbarra nos mesmos problemas: assistir a horas de vídeo sem colocar a mão na massa, não ter bases de dados realistas para treinar ou ficar sem saber qual fórmula estudar primeiro.',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          'O [PlanilhaLab](https://planilhalab02.vercel.app/) foi criado justamente para resolver isso. Ele é um aplicativo web **100% gratuito, local e offline** que reúne trilha de estudos, exercícios práticos em uma mini planilha interativa, gerador de dados fictícios, guia rápido de fórmulas, timer de foco e caderno de anotações — tudo direto no navegador, sem precisar criar conta nem pagar licença.',
+      },
+      {
+        tipo: 'dica',
+        titulo: 'Aviso importante sobre o idioma',
+        texto:
+          'No momento, o PlanilhaLab está disponível **apenas em português (PT-BR)** — toda a interface, os enunciados dos exercícios, as dicas e o guia de fórmulas estão em português. Caso você esteja acessando o blog de fora do Brasil com a tradução automática ativada, tenha em mente que o aplicativo externo ainda não possui versão em outros idiomas.',
+      },
+      {
+        tipo: 'cta',
+        titulo: 'Quer testar o PlanilhaLab agora mesmo?',
+        texto:
+          'Acesse o aplicativo gratuitamente pelo navegador do computador ou celular. Seus progressos e anotações ficam salvos localmente no seu dispositivo e funcionam até sem internet.',
+        textoBotao: 'Acessar o PlanilhaLab',
+        link: 'https://planilhalab02.vercel.app/',
+      },
+      {
+        tipo: 'subtitulo',
+        texto: 'O que você encontra dentro do PlanilhaLab',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          'O aplicativo é dividido em **5 áreas principais** pensadas para transformar estudo passivo em prática real:',
+      },
+      {
+        tipo: 'lista',
+        ordenada: false,
+        itens: [
+          '**Trilha & Aulas:** um roteiro organizado em 4 módulos — “01. Fundamentos e Produtividade”, “02. Lógica, Condições e Texto”, “03. Cruzamento de Bases e Tabelas Dinâmicas” e “04. Dashboards, Power Query e Automação” (incluindo introdução a Macros e VBA) — integrado a aulas avulsas do YouTube.',
+          '**Prática (Mini Planilha Interativa):** 10 exercícios práticos corrigidos automaticamente na hora. Você digita a fórmula direto na célula e recebe feedback imediato, dicas progressivas e explicação da solução.',
+          '**Gerador de Dados Fictícios:** cria tabelas realistas prontas para praticar cenários de mercado, como **Vendas** (pedidos por região, vendedor, categoria, desconto e faturamento líquido), **Estoque** (SKUs, armazéns, nível mínimo e reposição) e **Suporte** (chamados técnicos, prioridade, tempo de resolução e nota CSAT).',
+          '**Guia Offline:** biblioteca rápida de consulta com sintaxes em português, armadilhas mais comuns (como erro `#VALOR!` ou números com aspas) e resumo de atalhos essenciais para consultar mesmo sem conexão.',
+          '**Caderno, Lembretes e Timer de Foco:** espaço para salvar seus resumos de estudo, configurar lembretes diários ou pontuais e estudar com timer integrado nos modos **Pomodoro 25m**, **Imersão 50m**, **Pausa 5m** e **Pausa 10m**.',
+        ],
+      },
+      {
+        tipo: 'subtitulo',
+        texto: 'Quais fórmulas você pratica na mini planilha interativa?',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          'Os exercícios práticos cobrem exatamente as funções mais cobradas em entrevistas de emprego e na rotina de gestão financeira e comercial:',
+      },
+      {
+        tipo: 'lista',
+        ordenada: true,
+        itens: [
+          'Básico essencial: `SOMA`, `MÉDIA` e reajuste com **Referência Absoluta** (`$`).',
+          'Lógica e agregação condicional: `SE`, `SOMASE` (receita por região) e `CONT.SE` (contagem de pedidos por status).',
+          'Tratamento de texto: extração de prefixos com `ESQUERDA`, além de conteúdos sobre `DIREITA` e `CONCAT`.',
+          'Cruzamento de tabelas e proteção de erros: consulta de preço com `PROCV`, busca à esquerda com `PROCX` e margem blindada com `SEERRO`.',
+        ],
+      },
+      {
+        tipo: 'subtitulo',
+        texto: 'Funciona sem internet e pode ser instalado como aplicativo',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          'Um dos grandes diferenciais do [PlanilhaLab](https://planilhalab02.vercel.app/) é ser um **PWA (Progressive Web App)**. Isso significa que você pode instalá-lo na tela inicial do celular ou como aplicativo no computador pelo Chrome, Edge ou Safari e continuar resolvendo exercícios, consultando o guia de fórmulas e escrevendo no seu caderno mesmo quando estiver offline — como no transporte ou em viagens.',
+      },
+      {
+        tipo: 'paragrafo',
+        texto:
+          'Além disso, como o armazenamento é **100% local**, suas anotações, lembretes e progresso nos módulos não dependem de login nem ficam expostos em servidores externos.',
+      },
+      {
+        tipo: 'subtitulo',
+        texto: 'Como começar a estudar hoje em 3 passos',
+      },
+      {
+        tipo: 'lista',
+        ordenada: true,
+        itens: [
+          'Abra o link [planilhalab02.vercel.app](https://planilhalab02.vercel.app/) no navegador.',
+          'Ative o timer no modo **Pomodoro 25m** e escolha o primeiro tema da **Trilha & Aulas** ou vá direto para a aba **Prática** para testar seu nível atual.',
+          'Gere uma base fictícia na aba **Gerador de Dados** para levar o que aprendeu para o Excel ou para o Google Sheets e montar seus próprios gráficos e dashboards.',
+        ],
+      },
+      {
+        tipo: 'cta',
+        titulo: 'Comece a praticar Excel agora no PlanilhaLab',
+        texto:
+          'Gratuito, sem cadastro, funciona offline e traz exercícios corrigidos na hora. Lembrete: atualmente disponível somente em português (PT-BR).',
+        textoBotao: 'Abrir PlanilhaLab grátis',
+        link: 'https://planilhalab02.vercel.app/',
+      },
+    ],
+  },
+  {
     id: '7',
     slug: 'planilha-financeira-2027-google-sheets-automatica',
     titulo:

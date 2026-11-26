@@ -5,10 +5,12 @@ interface RichTextProps {
 }
 
 /**
- * Parses **bold** and `inline code` safely into React elements without HTML injection.
+ * Parses **bold**, `inline code`, and [label](https://...) links safely into React elements without HTML injection.
  */
 export function RichText({ text }: RichTextProps) {
-  const tokens = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+  const tokens = text.split(
+    /(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\(https?:\/\/[^)\s]+\))/g
+  );
 
   return (
     <>
@@ -33,6 +35,22 @@ export function RichText({ text }: RichTextProps) {
             >
               {token.slice(1, -1)}
             </code>
+          );
+        }
+
+        const linkMatch = token.match(/^\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)$/);
+        if (linkMatch) {
+          const [, label, href] = linkMatch;
+          return (
+            <a
+              key={idx}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-[#7C3AED] underline decoration-[#7C3AED]/40 underline-offset-4 transition-colors hover:text-[#6D28D9] hover:decoration-[#6D28D9] dark:text-[#C4B5FD] dark:decoration-[#C4B5FD]/40 dark:hover:text-[#F3F4F6]"
+            >
+              {label}
+            </a>
           );
         }
 
