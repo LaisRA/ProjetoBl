@@ -90,6 +90,16 @@ export function Footer({ onNavigate }: FooterProps) {
 
           <div className="flex flex-wrap items-center gap-6 text-sm font-medium">
             <a
+              href="#/sobre"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate('#/sobre');
+              }}
+              className="text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
+            >
+              Sobre Mim
+            </a>
+            <a
               href="#/privacidade"
               onClick={(e) => {
                 e.preventDefault();

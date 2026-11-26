@@ -3,12 +3,22 @@ import { useCallback, useEffect, useState } from 'react';
 export type AppRoute =
   | { view: 'home' }
   | { view: 'article'; slug: string }
+  | { view: 'about' }
   | { view: 'privacy' };
 
 function parseHash(hash: string): AppRoute {
   const cleaned = hash.replace(/^#/, '').trim();
   if (!cleaned || cleaned === '/') {
     return { view: 'home' };
+  }
+
+  if (
+    cleaned === '/sobre' ||
+    cleaned === 'sobre' ||
+    cleaned === '/sobre-mim' ||
+    cleaned === 'sobre-mim'
+  ) {
+    return { view: 'about' };
   }
 
   if (

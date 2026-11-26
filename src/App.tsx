@@ -5,6 +5,7 @@
 
 import { ArrowLeft, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { AboutView } from './components/AboutView';
 import { ArticleCard } from './components/ArticleCard';
 import { ArticleView } from './components/ArticleView';
 import { CookieConsent } from './components/CookieConsent';
@@ -247,6 +248,10 @@ export default function App() {
               </button>
             </div>
           ))}
+
+        {route.view === 'about' && (
+          <AboutView onBack={() => navigate('#/')} />
+        )}
 
         {route.view === 'privacy' && (
           <PrivacyView

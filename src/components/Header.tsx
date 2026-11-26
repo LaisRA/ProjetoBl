@@ -33,6 +33,7 @@ export function Header({
   };
 
   const isTutorialsActive = route.view === 'home' || route.view === 'article';
+  const isAboutActive = route.view === 'about';
 
   return (
     <header className="sticky top-0 z-40 border-b border-[#E4E4E7] bg-[#FAFAFC]/90 backdrop-blur-md transition-colors duration-200 dark:border-[#2A243D] dark:bg-[#0D0B14]/90">
@@ -82,6 +83,20 @@ export function Header({
             }`}
           >
             Tutoriais
+          </a>
+          <a
+            href="#/sobre"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNav('#/sobre');
+            }}
+            className={`whitespace-nowrap shrink-0 transition-colors duration-150 ${
+              isAboutActive
+                ? 'text-[#7C3AED] dark:text-[#8B5CF6]'
+                : 'text-[#52525B] hover:text-[#18181B] dark:text-[#9CA3AF] dark:hover:text-[#F3F4F6]'
+            }`}
+          >
+            Sobre Mim
           </a>
           <a
             href={LINKS_SOCIAIS.youtube}
@@ -172,6 +187,20 @@ export function Header({
               }`}
             >
               Tutoriais
+            </a>
+            <a
+              href="#/sobre"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNav('#/sobre');
+              }}
+              className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                isAboutActive
+                  ? 'bg-[#EDE9FE] text-[#6D28D9] dark:bg-[#8B5CF6]/16 dark:text-[#C4B5FD]'
+                  : 'text-[#52525B] hover:bg-[#FAFAFC] hover:text-[#18181B] dark:text-[#9CA3AF] dark:hover:bg-[#0D0B14] dark:hover:text-[#F3F4F6]'
+              }`}
+            >
+              Sobre Mim
             </a>
             <a
               href={LINKS_SOCIAIS.youtube}

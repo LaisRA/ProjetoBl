@@ -126,6 +126,18 @@ export function useSeo(route: AppRoute, activePost: Post | null) {
       ogImage = resolvePostImage(activePost);
       ogImageAlt = activePost.titulo;
       pagePath = `/artigo/${activePost.slug}`;
+    } else if (route.view === 'about') {
+      title = `Sobre Mim — ${SITE_NAME} | Afiliada Google Workspace & IA na Prática`;
+      description =
+        'Conheça a Lais Raniele: criadora do Planilha Lab, afiliada oficial do Google Workspace e criadora de tutoriais práticos de gestão financeira, Excel, Google Planilhas, automação e IA.';
+      canonicalUrl = `${baseUrl}#/sobre`;
+      ogType = 'website';
+      ogImage = new URL(
+        'assets/aistudio/Gemini_Generated_Image_fa0gefa0gefa0gef__1__db809f31.jpg',
+        baseUrl
+      ).toString();
+      ogImageAlt = 'Lais Raniele — Afiliada Google Workspace e Criadora de Projetos com IA';
+      pagePath = '/sobre';
     } else if (route.view === 'privacy') {
       title = `Política de Privacidade e Cookies | ${SITE_NAME}`;
       description =
@@ -197,7 +209,12 @@ export function useSeo(route: AppRoute, activePost: Post | null) {
       removeMeta('property', 'article:author');
       removeMeta('property', 'article:published_time');
 
-      const schemaType = route.view === 'privacy' ? 'WebPage' : 'Blog';
+      const schemaType =
+        route.view === 'privacy'
+          ? 'WebPage'
+          : route.view === 'about'
+            ? 'AboutPage'
+            : 'Blog';
 
       upsertJsonLd({
         '@context': 'https://schema.org',
