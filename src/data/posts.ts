@@ -10,7 +10,7 @@
  *          - `id`: um número único em texto (ex: "6")
  *          - `slug`: URL amigável sem espaços ou acentos (ex: "meu-novo-tutorial")
  *          - `titulo`, `resumo`, `data` e `tempoLeitura`
- *          - `categoria`: escolha entre "Gestão Financeira", "Automação Comercial", "IA & Google" ou "Últimas Atualizações"
+ *          - `categoria`: escolha entre "Gestão Financeira", "Automação Comercial" ou "IA & Google"
  *          - `youtubeId`: (opcional) cole apenas o código de 11 caracteres do vídeo
  *            (ex: em youtube.com/watch?v=ABC123xyz00, use "ABC123xyz00"). Deixe "" se não tiver vídeo.
  *          - `linkTemplate`: (opcional) cole o link do template apenas quando o artigo tiver um arquivo pronto para baixar; deixe "" para ocultar a caixa de template.
@@ -27,13 +27,10 @@
  * ============================================================================
  */
 
-import autoPostsData from './autoPosts.json';
-
 export type Categoria =
   | 'Gestão Financeira'
   | 'Automação Comercial'
-  | 'IA & Google'
-  | 'Últimas Atualizações';
+  | 'IA & Google';
 
 export type BlocoConteudo =
   | {
@@ -78,8 +75,6 @@ export interface Post {
   tempoLeitura: string;
   youtubeId?: string;
   imagemOg?: string;
-  fonteUrl?: string;
-  fonteNome?: string;
   linkTemplate?: string;
   tituloTemplate?: string;
   descricaoTemplate?: string;
@@ -91,7 +86,6 @@ export const CATEGORIAS: Categoria[] = [
   'Gestão Financeira',
   'Automação Comercial',
   'IA & Google',
-  'Últimas Atualizações',
 ];
 
 export const LINKS_SOCIAIS = {
@@ -105,7 +99,7 @@ export const LINKS_SOCIAIS = {
   site: 'https://laisraniele.com.br',
 };
 
-export const manualPosts: Post[] = [
+export const posts: Post[] = [
   {
     id: '7',
     slug: 'planilha-financeira-2027-google-sheets-automatica',
@@ -1526,9 +1520,4 @@ Analise os termos e entregue:
     ],
   },
 ];
-
-// Mescla automaticamente os rascunhos aprovados de src/data/autoPosts.json com seus artigos manuais
-const autoPosts = Array.isArray(autoPostsData) ? (autoPostsData as Post[]) : [];
-
-export const posts: Post[] = [...autoPosts, ...manualPosts];
 

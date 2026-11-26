@@ -265,20 +265,6 @@ export function ArticleView({
             <span>{post.data}</span>
             <span aria-hidden="true">·</span>
             <span>{post.tempoLeitura}</span>
-            {post.fonteUrl && (
-              <>
-                <span aria-hidden="true">·</span>
-                <a
-                  href={post.fonteUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 font-medium text-[#7C3AED] hover:underline dark:text-[#C4B5FD]"
-                >
-                  <span>{post.fonteNome || 'Fonte oficial'}</span>
-                  <ExternalLink className="h-3 w-3" aria-hidden="true" />
-                </a>
-              </>
-            )}
           </div>
         </header>
 

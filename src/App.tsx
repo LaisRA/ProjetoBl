@@ -201,23 +201,18 @@ export default function App() {
               ) : (
                 <div className="rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] px-6 py-12 text-center dark:border-[#2A243D] dark:bg-[#161321]">
                   <p className="font-display text-lg font-semibold text-[#18181B] dark:text-[#F3F4F6]">
-                    {selectedCategory === 'Últimas Atualizações' && !searchQuery
-                      ? 'Novas atualizações do Google aparecerão aqui em breve.'
-                      : 'Nenhum tutorial encontrado para essa busca.'}
+                    Nenhum tutorial encontrado para essa busca.
                   </p>
                   <p className="mt-2 text-sm text-[#52525B] dark:text-[#9CA3AF]">
-                    {selectedCategory === 'Últimas Atualizações' && !searchQuery
-                      ? 'Esta seção recebe automaticamente as novidades oficiais de IA e Google Workspace aprovadas no GitHub.'
-                      : 'Tente usar termos como “Sheets”, “Gemini”, “CRM” ou limpe os filtros.'}
+                    Tente usar termos como “Sheets”, “Gemini”, “CRM” ou limpe os
+                    filtros.
                   </p>
                   <button
                     type="button"
                     onClick={resetFilters}
                     className="mt-5 inline-flex h-10 items-center rounded-lg bg-[#7C3AED] px-4 text-sm font-medium text-white transition-colors hover:bg-[#6D28D9] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] cursor-pointer"
                   >
-                    {selectedCategory === 'Últimas Atualizações' && !searchQuery
-                      ? 'Ver todos os tutoriais'
-                      : 'Limpar filtros'}
+                    Limpar filtros
                   </button>
                 </div>
               )}
