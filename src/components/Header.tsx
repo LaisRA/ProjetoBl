@@ -49,14 +49,14 @@ export function Header({
         >
           <span
             aria-hidden="true"
-            className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden"
+            className="inline-flex h-8 w-8 shrink-0 items-center justify-center"
           >
             <img
-              src="./assets/aistudio/R_ffdf41d5.png"
+              src={`${import.meta.env.BASE_URL}logo.png`}
               alt=""
-              width={36}
-              height={36}
-              className="h-full w-full object-contain scale-[2.25] translate-y-[12%] dark:brightness-125"
+              width={32}
+              height={32}
+              className="h-8 w-8 object-contain dark:brightness-125"
             />
           </span>
           <span>

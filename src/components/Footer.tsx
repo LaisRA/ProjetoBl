@@ -70,14 +70,14 @@ export function Footer({ onNavigate }: FooterProps) {
                 onNavigate('#/');
               }}
               aria-label="Lais Raniele — Início"
-              className="relative inline-flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:focus-visible:outline-[#8B5CF6]"
+              className="inline-flex h-8 w-8 shrink-0 items-center justify-center transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:focus-visible:outline-[#8B5CF6]"
             >
               <img
-                src="./assets/aistudio/R_ffdf41d5.png"
+                src={`${import.meta.env.BASE_URL}logo.png`}
                 alt="Logo Lais Raniele"
                 width={32}
                 height={32}
-                className="h-full w-full object-contain scale-[2.25] translate-y-[12%] dark:brightness-125"
+                className="h-7 w-7 object-contain dark:brightness-125"
               />
             </a>
             <p
