@@ -37,7 +37,7 @@ export function Header({
   return (
     <header className="sticky top-0 z-40 border-b border-[#E4E4E7] bg-[#FAFAFC]/90 backdrop-blur-md transition-colors duration-200 dark:border-[#2A243D] dark:bg-[#0D0B14]/90">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-8 px-4 sm:px-6">
-        {/* Zone 1: Brand Wordmark */}
+        {/* Zone 1: Brand Logo & Wordmark */}
         <a
           href="#/"
           onClick={(e) => {
@@ -45,9 +45,23 @@ export function Header({
             handleNav('#/');
           }}
           translate="no"
-          className="notranslate font-display text-xl font-bold tracking-tight text-[#18181B] transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7C3AED] dark:text-[#F3F4F6] dark:focus-visible:outline-[#8B5CF6] whitespace-nowrap shrink-0"
+          className="notranslate inline-flex items-center gap-2.5 font-display text-xl font-bold tracking-tight text-[#18181B] transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7C3AED] dark:text-[#F3F4F6] dark:focus-visible:outline-[#8B5CF6] whitespace-nowrap shrink-0"
         >
-          Lais Raniele<span className="text-[#7C3AED] dark:text-[#8B5CF6]">.</span>
+          <span
+            aria-hidden="true"
+            className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden"
+          >
+            <img
+              src="./assets/aistudio/R_ffdf41d5.png"
+              alt=""
+              width={36}
+              height={36}
+              className="h-full w-full object-contain scale-[2.25] translate-y-[12%] dark:brightness-125"
+            />
+          </span>
+          <span>
+            Lais Raniele<span className="text-[#7C3AED] dark:text-[#8B5CF6]">.</span>
+          </span>
         </a>
 
         {/* Zone 2: Clean Single-Line Navigation */}

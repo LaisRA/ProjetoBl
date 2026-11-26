@@ -60,14 +60,33 @@ export function Footer({ onNavigate }: FooterProps) {
           </div>
         </section>
 
-        {/* Copyright & Social Links */}
+        {/* Brand Logo, Copyright & Social Links */}
         <div className="flex flex-col items-start justify-between gap-4 border-t border-[#E4E4E7] pt-6 sm:flex-row sm:items-center dark:border-[#2A243D]">
-          <p
-            translate="no"
-            className="notranslate text-sm text-[#52525B] dark:text-[#9CA3AF]"
-          >
-            © 2026 Lais Raniele — laisraniele.com.br
-          </p>
+          <div className="flex items-center gap-3">
+            <a
+              href="#/"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate('#/');
+              }}
+              aria-label="Lais Raniele — Início"
+              className="relative inline-flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:focus-visible:outline-[#8B5CF6]"
+            >
+              <img
+                src="./assets/aistudio/R_ffdf41d5.png"
+                alt="Logo Lais Raniele"
+                width={32}
+                height={32}
+                className="h-full w-full object-contain scale-[2.25] translate-y-[12%] dark:brightness-125"
+              />
+            </a>
+            <p
+              translate="no"
+              className="notranslate text-sm text-[#52525B] dark:text-[#9CA3AF]"
+            >
+              © 2026 Lais Raniele — laisraniele.com.br
+            </p>
+          </div>
 
           <div className="flex flex-wrap items-center gap-6 text-sm font-medium">
             <a
