@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 export type AppRoute =
   | { view: 'home' }
   | { view: 'article'; slug: string }
+  | { view: 'prompts' }
   | { view: 'about' }
   | { view: 'privacy' };
 
@@ -10,6 +11,15 @@ function parseHash(hash: string): AppRoute {
   const cleaned = hash.replace(/^#/, '').trim();
   if (!cleaned || cleaned === '/') {
     return { view: 'home' };
+  }
+
+  if (
+    cleaned === '/prompts' ||
+    cleaned === 'prompts' ||
+    cleaned === '/hub-de-prompts' ||
+    cleaned === 'hub-de-prompts'
+  ) {
+    return { view: 'prompts' };
   }
 
   if (

@@ -126,6 +126,15 @@ export function useSeo(route: AppRoute, activePost: Post | null) {
       ogImage = resolvePostImage(activePost);
       ogImageAlt = activePost.titulo;
       pagePath = `/artigo/${activePost.slug}`;
+    } else if (route.view === 'prompts') {
+      title = `Hub de Prompts — ${SITE_NAME} | Gemini, Google Planilhas & Workspace`;
+      description =
+        'Prompts prontos e personalizáveis para copiar e usar no Gemini, Google Planilhas, Excel, Gmail, Google Docs e Apps Script.';
+      canonicalUrl = `${baseUrl}#/prompts`;
+      ogType = 'website';
+      ogImage = defaultImage;
+      ogImageAlt = 'Hub de Prompts — Lais Raniele';
+      pagePath = '/prompts';
     } else if (route.view === 'about') {
       title = `Sobre Mim — ${SITE_NAME} | Afiliada Google Workspace & IA na Prática`;
       description =
@@ -214,7 +223,9 @@ export function useSeo(route: AppRoute, activePost: Post | null) {
           ? 'WebPage'
           : route.view === 'about'
             ? 'AboutPage'
-            : 'Blog';
+            : route.view === 'prompts'
+              ? 'CollectionPage'
+              : 'Blog';
 
       upsertJsonLd({
         '@context': 'https://schema.org',

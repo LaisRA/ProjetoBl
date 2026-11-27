@@ -12,6 +12,7 @@ import { CookieConsent } from './components/CookieConsent';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { PrivacyView } from './components/PrivacyView';
+import { PromptsHubView } from './components/PromptsHubView';
 import { WorkspaceTopBar } from './components/WorkspaceBanner';
 import { CATEGORIAS, posts, type Categoria } from './data/posts';
 import { useHashRoute } from './hooks/useHashRoute';
@@ -248,6 +249,10 @@ export default function App() {
               </button>
             </div>
           ))}
+
+        {route.view === 'prompts' && (
+          <PromptsHubView onBack={() => navigate('#/')} />
+        )}
 
         {route.view === 'about' && (
           <AboutView onBack={() => navigate('#/')} />

@@ -33,6 +33,7 @@ export function Header({
   };
 
   const isTutorialsActive = route.view === 'home' || route.view === 'article';
+  const isPromptsActive = route.view === 'prompts';
   const isAboutActive = route.view === 'about';
 
   return (
@@ -83,6 +84,20 @@ export function Header({
             }`}
           >
             Tutoriais
+          </a>
+          <a
+            href="#/prompts"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNav('#/prompts');
+            }}
+            className={`whitespace-nowrap shrink-0 transition-colors duration-150 ${
+              isPromptsActive
+                ? 'text-[#7C3AED] dark:text-[#8B5CF6]'
+                : 'text-[#52525B] hover:text-[#18181B] dark:text-[#9CA3AF] dark:hover:text-[#F3F4F6]'
+            }`}
+          >
+            Prompts
           </a>
           <a
             href="#/sobre"
@@ -187,6 +202,20 @@ export function Header({
               }`}
             >
               Tutoriais
+            </a>
+            <a
+              href="#/prompts"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNav('#/prompts');
+              }}
+              className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                isPromptsActive
+                  ? 'bg-[#EDE9FE] text-[#6D28D9] dark:bg-[#8B5CF6]/16 dark:text-[#C4B5FD]'
+                  : 'text-[#52525B] hover:bg-[#FAFAFC] hover:text-[#18181B] dark:text-[#9CA3AF] dark:hover:bg-[#0D0B14] dark:hover:text-[#F3F4F6]'
+              }`}
+            >
+              Hub de Prompts
             </a>
             <a
               href="#/sobre"
