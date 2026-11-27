@@ -30,9 +30,249 @@
   }
 }
 
+:root {
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --card-hover-shadow: 0 14px 32px -10px rgba(124, 58, 237, 0.16), 0 4px 12px -4px rgba(24, 24, 27, 0.06);
+  --card-hover-border: rgba(124, 58, 237, 0.48);
+}
+
+html.dark {
+  --card-hover-shadow: 0 18px 36px -12px rgba(139, 92, 246, 0.28), 0 6px 16px -6px rgba(0, 0, 0, 0.5);
+  --card-hover-border: rgba(139, 92, 246, 0.58);
+}
+
+/* ============================================================================
+ * 1. HERO ENTRANCE & SUBTLE ANIMATED PURPLE GRADIENTS
+ * ============================================================================ */
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-flow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.hero-enter {
+  animation: hero-fade-up 0.65s var(--ease-spring) both;
+}
+
+.hero-delay-1 {
+  animation-delay: 0.04s;
+}
+
+.hero-delay-2 {
+  animation-delay: 0.12s;
+}
+
+.hero-delay-3 {
+  animation-delay: 0.2s;
+}
+
+.hero-delay-4 {
+  animation-delay: 0.28s;
+}
+
+.text-gradient-animated {
+  background-image: linear-gradient(
+    110deg,
+    #6D28D9 0%,
+    #7C3AED 30%,
+    #A855F7 55%,
+    #6366F1 80%,
+    #6D28D9 100%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-flow 7s ease-in-out infinite;
+}
+
+.dark .text-gradient-animated {
+  background-image: linear-gradient(
+    110deg,
+    #A78BFA 0%,
+    #C4B5FD 32%,
+    #E879F9 56%,
+    #818CF8 82%,
+    #A78BFA 100%
+  );
+}
+
+.btn-cta-gradient {
+  background-image: linear-gradient(
+    115deg,
+    #7C3AED 0%,
+    #6D28D9 42%,
+    #9333EA 74%,
+    #7C3AED 100%
+  );
+  background-size: 200% 100%;
+  animation: gradient-flow 6.5s ease-in-out infinite;
+  transition:
+    transform 0.22s var(--ease-spring),
+    box-shadow 0.28s var(--ease-spring),
+    filter 0.22s var(--ease-spring);
+}
+
+.btn-cta-gradient:hover {
+  filter: brightness(1.06);
+  box-shadow: 0 10px 24px -8px rgba(124, 58, 237, 0.55);
+}
+
+.dark .btn-cta-gradient {
+  background-image: linear-gradient(
+    115deg,
+    #8B5CF6 0%,
+    #7C3AED 45%,
+    #A855F7 75%,
+    #8B5CF6 100%
+  );
+}
+
+.dark .btn-cta-gradient:hover {
+  box-shadow: 0 10px 26px -8px rgba(139, 92, 246, 0.58);
+}
+
+/* ============================================================================
+ * 2. SCROLL REVEAL WITH CASCADE STAGGER (IntersectionObserver)
+ * ============================================================================ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(4px);
+  transition:
+    opacity 0.65s var(--ease-spring) var(--reveal-delay, 0s),
+    transform 0.65s var(--ease-spring) var(--reveal-delay, 0s),
+    filter 0.65s var(--ease-spring) var(--reveal-delay, 0s);
+  will-change: opacity, transform, filter;
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  will-change: auto;
+}
+
+/* ============================================================================
+ * 3. CARD & BUTTON MICRO-INTERACTIONS (60fps organic easing)
+ * ============================================================================ */
+.card-interactive {
+  transition:
+    transform 0.3s var(--ease-spring),
+    border-color 0.25s var(--ease-spring),
+    box-shadow 0.3s var(--ease-spring),
+    background-color 0.25s var(--ease-spring);
+}
+
+[data-reveal].card-interactive {
+  transition:
+    opacity 0.65s var(--ease-spring) var(--reveal-delay, 0s),
+    filter 0.65s var(--ease-spring) var(--reveal-delay, 0s),
+    transform 0.55s var(--ease-spring) var(--reveal-delay, 0s),
+    border-color 0.25s var(--ease-spring),
+    box-shadow 0.3s var(--ease-spring),
+    background-color 0.25s var(--ease-spring);
+}
+
+.card-interactive:hover,
+[data-reveal].is-revealed.card-interactive:hover {
+  transform: translateY(-5px);
+  border-color: var(--card-hover-border);
+  box-shadow: var(--card-hover-shadow);
+  transition-duration: 0.28s;
+  transition-delay: 0s;
+}
+
+.card-interactive:active,
+[data-reveal].is-revealed.card-interactive:active {
+  transform: translateY(-2px) scale(0.99);
+  transition-duration: 0.14s;
+  transition-delay: 0s;
+}
+
+/* Subtle tactile click feedback on buttons & interactive pills/CTAs */
+button:not(:disabled):not(.card-interactive),
+.btn-tactile {
+  transition-timing-function: var(--ease-spring);
+}
+
+button:not(:disabled):not(.card-interactive):active,
+.btn-tactile:active {
+  transform: scale(0.98);
+}
+
+/* ============================================================================
+ * 4. READING PROGRESS BAR (3px fixed top gradient)
+ * ============================================================================ */
+.reading-progress-bar {
+  background-image: linear-gradient(90deg, #6D28D9 0%, #8B5CF6 55%, #C084FC 100%);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.45);
+  transition: opacity 0.2s ease-out;
+}
+
+/* ============================================================================
+ * 5. NAVIGATION LINKS UNDERLINE (left-to-right) & SMOOTH THEME SWITCH
+ * ============================================================================ */
+.nav-link-underline {
+  position: relative;
+}
+
+.nav-link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  border-radius: 9999px;
+  background-image: linear-gradient(90deg, #7C3AED 0%, #A855F7 100%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.28s var(--ease-spring);
+}
+
+.dark .nav-link-underline::after {
+  background-image: linear-gradient(90deg, #8B5CF6 0%, #C4B5FD 100%);
+}
+
+.nav-link-underline:hover::after,
+.nav-link-underline:focus-visible::after,
+.nav-link-underline[data-active="true"]::after {
+  transform: scaleX(1);
+}
+
+/* Soft cross-fade applied briefly only while toggling Light/Dark theme */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color 0.28s var(--ease-spring),
+    border-color 0.28s var(--ease-spring),
+    color 0.24s var(--ease-spring),
+    fill 0.24s var(--ease-spring),
+    stroke 0.24s var(--ease-spring),
+    box-shadow 0.28s var(--ease-spring) !important;
+}
+
 /* Custom subtle scrollbars for code blocks */
 .code-scroll::-webkit-scrollbar {
   height: 8px;
+  width: 6px;
 }
 
 .code-scroll::-webkit-scrollbar-track {
@@ -48,14 +288,34 @@
   background-color: rgba(139, 92, 246, 0.28);
 }
 
+/* ============================================================================
+ * ACCESSIBILITY: REDUCED MOTION
+ * ============================================================================ */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
+  }
+
+  .card-interactive:hover,
+  [data-reveal].is-revealed.card-interactive:hover,
+  .card-interactive:active,
+  button:active,
+  .btn-tactile:active {
+    transform: none !important;
+  }
+
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
   }
 }
 

@@ -6,11 +6,13 @@ import {
   ExternalLink,
   RotateCcw,
   Search,
+  Share2,
+  SlidersHorizontal,
   Sparkles,
   Star,
   X,
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { LINKS_SOCIAIS } from '../data/posts';
 import {
   PROMPT_CATEGORIAS,
@@ -21,7 +23,9 @@ import {
 import { HighlightedPromptText, PromptCard } from './PromptCard';
 
 interface PromptsHubViewProps {
+  sharedPromptId?: string;
   onBack: () => void;
+  onClearSharedPrompt: () => void;
 }
 
 type CategoryFilter = 'Todos' | PromptCategoria | 'Favoritos';
@@ -109,6 +113,7 @@ async function copyToClipboard(text: string): Promise<boolean> {
 function WorkspaceAffiliateCard() {
   return (
     <aside
+      data-reveal=""
       aria-labelledby="prompts-workspace-banner"
       className="overflow-hidden rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] dark:border-[#2A243D] dark:bg-[#161321]"
     >
@@ -140,7 +145,7 @@ function WorkspaceAffiliateCard() {
           href={WORKSPACE_AFFILIATE_URL}
           target="_blank"
           rel="noopener noreferrer sponsored"
-          className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#7C3AED] px-4 text-xs sm:text-sm font-semibold text-white transition-colors duration-150 hover:bg-[#6D28D9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] whitespace-nowrap"
+          className="btn-cta-gradient btn-tactile inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl px-4 text-xs sm:text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] whitespace-nowrap"
         >
           <span>Conhecer o Google Workspace</span>
           <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -350,7 +355,11 @@ function CustomizePromptModal({ promptItem, onClose }: CustomizeModalProps) {
   );
 }
 
-export function PromptsHubView({ onBack }: PromptsHubViewProps) {
+export function PromptsHubView({
+  sharedPromptId,
+  onBack,
+  onClearSharedPrompt,
+}: PromptsHubViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryFilter>('Todos');
@@ -367,9 +376,17 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
     }
   });
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [sharedId, setSharedId] = useState<string | null>(null);
+  const [shareToastVisible, setShareToastVisible] = useState(false);
+  const shareTimeoutRef = useRef<number | null>(null);
   const [customizingPrompt, setCustomizingPrompt] = useState<PromptItem | null>(
     null
   );
+
+  const sharedPrompt = useMemo(() => {
+    if (!sharedPromptId) return null;
+    return promptsData.find((item) => item.id === sharedPromptId) ?? null;
+  }, [sharedPromptId]);
 
   useEffect(() => {
     try {
@@ -381,6 +398,14 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
       // Ignore storage errors
     }
   }, [favoriteIds]);
+
+  useEffect(() => {
+    return () => {
+      if (shareTimeoutRef.current !== null) {
+        window.clearTimeout(shareTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const toggleFavorite = (id: string) => {
     setFavoriteIds((prev) =>
@@ -398,10 +423,30 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
     }
   };
 
+  const handleSharePrompt = async (item: PromptItem) => {
+    const directUrl = `${window.location.origin}/prompts/${encodeURIComponent(item.id)}`;
+    const ok = await copyToClipboard(directUrl);
+    if (ok) {
+      setSharedId(item.id);
+      setShareToastVisible(true);
+      if (shareTimeoutRef.current !== null) {
+        window.clearTimeout(shareTimeoutRef.current);
+      }
+      shareTimeoutRef.current = window.setTimeout(() => {
+        setSharedId(null);
+        setShareToastVisible(false);
+      }, 2500);
+    }
+  };
+
   const filteredPrompts = useMemo(() => {
     const query = normalizeText(searchQuery.trim());
 
     return promptsData.filter((item) => {
+      if (sharedPrompt && item.id === sharedPrompt.id && !query && selectedCategory === 'Todos') {
+        return false;
+      }
+
       if (selectedCategory === 'Favoritos') {
         if (!favoriteIds.includes(item.id)) return false;
       } else if (
@@ -418,7 +463,7 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
       );
       return haystack.includes(query);
     });
-  }, [searchQuery, selectedCategory, favoriteIds]);
+  }, [searchQuery, selectedCategory, favoriteIds, sharedPrompt]);
 
   const resetFilters = () => {
     setSearchQuery('');
@@ -438,19 +483,33 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
   const secondBatch =
     filteredPrompts.length > 12 ? filteredPrompts.slice(12) : [];
 
-  const renderPromptCard = (item: PromptItem) => (
+  const renderPromptCard = (item: PromptItem, index: number) => (
     <PromptCard
       key={item.id}
       item={item}
       isFavorited={favoriteIds.includes(item.id)}
       isCopied={copiedId === item.id}
+      isShared={sharedId === item.id}
       variableCount={extractVariables(item).length}
       geminiUrl={GEMINI_APP_URL}
+      revealDelay={`${(index % 4) * 0.1}s`}
       onToggleFavorite={toggleFavorite}
+      onShare={handleSharePrompt}
       onCopy={handleCopyPrompt}
       onCustomize={setCustomizingPrompt}
     />
   );
+
+  const sharedVariableCount = sharedPrompt
+    ? extractVariables(sharedPrompt).length
+    : 0;
+  const isSharedFavorited = sharedPrompt
+    ? favoriteIds.includes(sharedPrompt.id)
+    : false;
+  const isSharedCopied = sharedPrompt ? copiedId === sharedPrompt.id : false;
+  const isSharedLinkCopied = sharedPrompt
+    ? sharedId === sharedPrompt.id
+    : false;
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-5 pb-10 sm:px-6 sm:pt-6">
@@ -466,15 +525,186 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
         </button>
       </div>
 
+      {/* Shared Prompt Pinned at the Top of the Screen */}
+      {sharedPrompt && (
+        <section
+          aria-labelledby="shared-prompt-heading"
+          className="hero-enter hero-delay-1 mb-6 overflow-hidden rounded-2xl border border-[#7C3AED]/45 bg-[#FFFFFF] shadow-sm dark:border-[#8B5CF6]/55 dark:bg-[#161321]"
+        >
+          <div aria-hidden="true" className="grid h-[3px] w-full grid-cols-4">
+            <span className="bg-[#4285F4]" />
+            <span className="bg-[#EA4335]" />
+            <span className="bg-[#FBBC05]" />
+            <span className="bg-[#34A853]" />
+          </div>
+
+          <div className="p-4 sm:p-5">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex min-w-0 flex-wrap items-center gap-1.5 text-xs font-medium">
+                <span className="text-[#7C3AED] dark:text-[#C4B5FD]">
+                  Prompt compartilhado
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="text-[#D4D4D8] dark:text-[#3F3A52]"
+                >
+                  ·
+                </span>
+                <span className="text-[#18181B] dark:text-[#F3F4F6]">
+                  {sharedPrompt.ferramenta}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="text-[#D4D4D8] dark:text-[#3F3A52]"
+                >
+                  ·
+                </span>
+                <span className="text-[#52525B] dark:text-[#9CA3AF]">
+                  {sharedPrompt.categoria}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => handleSharePrompt(sharedPrompt)}
+                  aria-label={`Copiar link direto do prompt "${sharedPrompt.titulo}"`}
+                  title={
+                    isSharedLinkCopied
+                      ? 'Link copiado!'
+                      : 'Compartilhar link deste prompt'
+                  }
+                  className={`inline-flex h-7 w-7 items-center justify-center rounded-md border transition-colors duration-150 cursor-pointer ${
+                    isSharedLinkCopied
+                      ? 'border-[#10B981]/50 bg-[#10B981]/12 text-[#059669] dark:text-[#34D399]'
+                      : 'border-[#E4E4E7] bg-[#FAFAFC] text-[#52525B] hover:border-[#7C3AED]/60 hover:text-[#7C3AED] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]'
+                  }`}
+                >
+                  {isSharedLinkCopied ? (
+                    <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                  ) : (
+                    <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => toggleFavorite(sharedPrompt.id)}
+                  aria-label={
+                    isSharedFavorited
+                      ? `Remover "${sharedPrompt.titulo}" dos favoritos`
+                      : `Salvar "${sharedPrompt.titulo}" nos favoritos`
+                  }
+                  aria-pressed={isSharedFavorited}
+                  title={
+                    isSharedFavorited
+                      ? 'Remover dos favoritos'
+                      : 'Salvar nos favoritos'
+                  }
+                  className={`inline-flex h-7 w-7 items-center justify-center rounded-md border transition-colors duration-150 cursor-pointer ${
+                    isSharedFavorited
+                      ? 'border-[#FBBC05]/50 bg-[#FBBC05]/12 text-[#D97706] dark:text-[#FDE047]'
+                      : 'border-[#E4E4E7] bg-[#FAFAFC] text-[#52525B] hover:border-[#FBBC05]/60 hover:text-[#D97706] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#9CA3AF] dark:hover:text-[#FDE047]'
+                  }`}
+                >
+                  <Star
+                    className={`h-3.5 w-3.5 ${isSharedFavorited ? 'fill-current' : ''}`}
+                    aria-hidden="true"
+                  />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={onClearSharedPrompt}
+                  aria-label="Fechar destaque do prompt compartilhado"
+                  title="Ver hub completo"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-[#E4E4E7] bg-[#FAFAFC] text-[#52525B] transition-colors hover:text-[#18181B] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#9CA3AF] dark:hover:text-[#F3F4F6] cursor-pointer"
+                >
+                  <X className="h-3.5 w-3.5" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+
+            <h2
+              id="shared-prompt-heading"
+              className="mt-2 font-display text-lg sm:text-xl font-bold leading-snug text-[#18181B] dark:text-[#F3F4F6]"
+            >
+              {sharedPrompt.titulo}
+            </h2>
+            <p className="mt-1 text-xs sm:text-sm leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
+              {sharedPrompt.descricao}
+            </p>
+
+            <div className="mt-3 max-h-56 overflow-y-auto code-scroll whitespace-pre-line rounded-xl border border-[#E4E4E7] bg-[#FAFAFC] p-3.5 text-xs sm:text-sm leading-relaxed text-[#27272A] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#E5E7EB]">
+              <HighlightedPromptText
+                text={sharedPrompt.prompt}
+                allowedVariables={sharedPrompt.variaveis}
+              />
+            </div>
+
+            <div className="mt-3.5 flex flex-wrap items-center justify-between gap-2.5 border-t border-[#E4E4E7]/80 pt-3 dark:border-[#2A243D]/80">
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleCopyPrompt(sharedPrompt)}
+                  className={`inline-flex h-9 items-center gap-1.5 rounded-lg px-4 text-xs sm:text-sm font-semibold text-white transition-colors duration-150 whitespace-nowrap cursor-pointer ${
+                    isSharedCopied
+                      ? 'bg-[#10B981]'
+                      : 'btn-cta-gradient'
+                  }`}
+                >
+                  {isSharedCopied ? (
+                    <>
+                      <Check className="h-4 w-4" aria-hidden="true" />
+                      <span>Copiado! ✓</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="h-4 w-4" aria-hidden="true" />
+                      <span>Copiar prompt</span>
+                    </>
+                  )}
+                </button>
+
+                {sharedVariableCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setCustomizingPrompt(sharedPrompt)}
+                    className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#E4E4E7] bg-[#FFFFFF] px-3.5 text-xs sm:text-sm font-medium text-[#18181B] transition-colors hover:border-[#7C3AED]/60 hover:text-[#7C3AED] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#F3F4F6] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#C4B5FD] whitespace-nowrap cursor-pointer"
+                  >
+                    <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span>Personalizar</span>
+                  </button>
+                )}
+              </div>
+
+              <a
+                href={GEMINI_APP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-tactile inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#E4E4E7] bg-[#FFFFFF] px-3 text-xs sm:text-sm font-medium text-[#18181B] transition-colors hover:border-[#4285F4]/60 hover:text-[#1D4ED8] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#F3F4F6] dark:hover:border-[#4285F4]/60 dark:hover:text-[#93C5FD] whitespace-nowrap"
+              >
+                <Sparkles className="h-3.5 w-3.5 text-[#4285F4]" aria-hidden="true" />
+                <span>Abrir no Gemini</span>
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Compact Header / Hero */}
       <section className="max-w-3xl">
-        <p className="text-[11px] sm:text-xs font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
+        <p className="hero-enter hero-delay-1 text-[11px] sm:text-xs font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
           Diretório Prático · Gemini · Google Workspace · Planilhas &amp; Finanças
         </p>
-        <h1 className="mt-1 font-display text-2xl sm:text-3xl font-bold leading-[1.15] tracking-tight text-[#18181B] dark:text-[#F3F4F6]">
-          Hub de Prompts da Lais Raniele
+        <h1 className="hero-enter hero-delay-2 mt-1 font-display text-2xl sm:text-3xl font-bold leading-[1.15] tracking-tight text-[#18181B] dark:text-[#F3F4F6]">
+          Hub de Prompts da{' '}
+          <span className="notranslate text-gradient-animated">
+            Lais Raniele
+          </span>
         </h1>
-        <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
+        <p className="hero-enter hero-delay-3 mt-1.5 text-xs sm:text-sm leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
           Prompts prontos e testados para copiar, personalizar com seus dados e
           colar direto no Gemini, Google Planilhas, Gmail, Docs e Apps Script.
         </p>
@@ -483,7 +713,7 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
       {/* Real-Time Search & Category Filters */}
       <section
         aria-label="Busca e filtros de prompts"
-        className="mt-4 flex flex-col gap-3 border-y border-[#E4E4E7] py-3.5 dark:border-[#2A243D]"
+        className="hero-enter hero-delay-4 mt-4 flex flex-col gap-3 border-y border-[#E4E4E7] py-3.5 dark:border-[#2A243D]"
       >
         <div className="relative">
           <Search
@@ -613,6 +843,27 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
           onClose={() => setCustomizingPrompt(null)}
         />
       )}
+
+      {/* Floating toast confirming direct prompt link copied */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className={`pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transition-[transform,opacity] duration-200 ease-out ${
+          shareToastVisible
+            ? 'translate-y-0 opacity-100'
+            : 'translate-y-3 opacity-0'
+        }`}
+      >
+        {shareToastVisible && (
+          <div className="inline-flex items-center gap-2 rounded-xl border border-[#10B981]/30 bg-[#18181B] px-4 py-2.5 text-sm font-medium text-white shadow-lg dark:border-[#10B981]/40 dark:bg-[#1E1A2E]">
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#10B981] text-white">
+              <Check className="h-3 w-3" aria-hidden="true" />
+            </span>
+            <span>Link do prompt copiado!</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

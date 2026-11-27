@@ -13,10 +13,12 @@ import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { PrivacyView } from './components/PrivacyView';
 import { PromptsHubView } from './components/PromptsHubView';
+import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { WorkspaceTopBar } from './components/WorkspaceBanner';
 import { CATEGORIAS, posts, type Categoria } from './data/posts';
 import { useHashRoute } from './hooks/useHashRoute';
 import { useLanguage } from './hooks/useLanguage';
+import { useScrollReveal } from './hooks/useScrollReveal';
 import { useSeo } from './hooks/useSeo';
 import { useTheme } from './hooks/useTheme';
 
@@ -78,10 +80,18 @@ export default function App() {
     return posts.find((post) => post.slug === route.slug) ?? null;
   }, [route]);
 
+  const routeKey =
+    route.view === 'article'
+      ? `article-${route.slug}`
+      : route.view === 'prompts' && route.promptId
+        ? `prompts-${route.promptId}`
+        : route.view;
+
   useSeo(route, activePost);
+  useScrollReveal(routeKey);
 
   const openPost = (slug: string) => {
-    navigate(`#/artigo/${slug}`);
+    navigate(`/artigo/${slug}`);
   };
 
   const resetFilters = () => {
@@ -90,7 +100,8 @@ export default function App() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#FAFAFC] text-[#18181B] transition-colors duration-200 dark:bg-[#0D0B14] dark:text-[#F3F4F6]">
+    <div className="flex min-h-screen flex-col bg-[#FAFAFC] text-[#18181B] dark:bg-[#0D0B14] dark:text-[#F3F4F6]">
+      <ScrollProgressBar routeKey={routeKey} />
       <WorkspaceTopBar />
       <Header
         route={route}
@@ -107,13 +118,16 @@ export default function App() {
           <div className="mx-auto max-w-5xl px-4 pt-12 pb-8 sm:px-6 sm:pt-16">
             {/* Lean Editorial Hero */}
             <section className="max-w-2xl">
-              <p className="text-xs sm:text-sm font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
+              <p className="hero-enter hero-delay-1 text-xs sm:text-sm font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
                 Ecossistema Google · IA Aplicada · Finanças &amp; Vendas
               </p>
-              <h1 className="mt-3 font-display text-3xl sm:text-5xl font-bold leading-[1.12] tracking-tight text-[#18181B] dark:text-[#F3F4F6]">
-                Tutoriais práticos de IA, Gestão Financeira e Automação.
+              <h1 className="hero-enter hero-delay-2 mt-3 font-display text-3xl sm:text-5xl font-bold leading-[1.12] tracking-tight text-[#18181B] dark:text-[#F3F4F6]">
+                Tutoriais práticos de{' '}
+                <span className="text-gradient-animated">
+                  IA, Gestão Financeira e Automação.
+                </span>
               </h1>
-              <p className="mt-4 text-base sm:text-lg leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
+              <p className="hero-enter hero-delay-3 mt-4 text-base sm:text-lg leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
                 Guias diretos ao ponto com fórmulas, prompts validados e scripts
                 prontos para copiar no Google Sheets, Docs, Forms, Gmail e
                 Gemini.
@@ -123,7 +137,7 @@ export default function App() {
             {/* Search & Category Controls */}
             <section
               aria-label="Busca e filtros de artigos"
-              className="mt-10 flex flex-col gap-4 border-y border-[#E4E4E7] py-6 dark:border-[#2A243D]"
+              className="hero-enter hero-delay-4 mt-10 flex flex-col gap-4 border-y border-[#E4E4E7] py-6 dark:border-[#2A243D]"
             >
               {/* Search Bar */}
               <div className="relative">
@@ -192,11 +206,12 @@ export default function App() {
             <section aria-label="Lista de tutoriais" className="mt-8">
               {filteredPosts.length > 0 ? (
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  {filteredPosts.map((post) => (
+                  {filteredPosts.map((post, index) => (
                     <ArticleCard
                       key={post.id}
                       post={post}
                       onOpen={openPost}
+                      revealDelay={`${(index % 2) * 0.1}s`}
                     />
                   ))}
                 </div>
@@ -227,7 +242,7 @@ export default function App() {
             <ArticleView
               post={activePost}
               allPosts={posts}
-              onBack={() => navigate('#/')}
+              onBack={() => navigate('/home')}
               onOpenPost={openPost}
             />
           ) : (
@@ -241,7 +256,7 @@ export default function App() {
               </p>
               <button
                 type="button"
-                onClick={() => navigate('#/')}
+                onClick={() => navigate('/home')}
                 className="mt-6 inline-flex h-10 items-center gap-2 rounded-lg bg-[#7C3AED] px-4 text-sm font-medium text-white transition-colors hover:bg-[#6D28D9] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] cursor-pointer"
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
@@ -251,16 +266,20 @@ export default function App() {
           ))}
 
         {route.view === 'prompts' && (
-          <PromptsHubView onBack={() => navigate('#/')} />
+          <PromptsHubView
+            sharedPromptId={route.promptId}
+            onBack={() => navigate('/home')}
+            onClearSharedPrompt={() => navigate('/prompts')}
+          />
         )}
 
         {route.view === 'about' && (
-          <AboutView onBack={() => navigate('#/')} />
+          <AboutView onBack={() => navigate('/home')} />
         )}
 
         {route.view === 'privacy' && (
           <PrivacyView
-            onBack={() => navigate('#/')}
+            onBack={() => navigate('/home')}
             onResetCookies={() => setCookieResetSignal((n) => n + 1)}
           />
         )}
@@ -269,7 +288,7 @@ export default function App() {
       <Footer onNavigate={navigate} />
       <CookieConsent
         resetSignal={cookieResetSignal}
-        onOpenPrivacy={() => navigate('#/privacidade')}
+        onOpenPrivacy={() => navigate('/privacidade')}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { LINKS_SOCIAIS, type Post } from '../data/posts';
+import { promptsData } from '../data/prompts';
 import type { AppRoute } from './useHashRoute';
 
 const SITE_NAME = 'Lais Raniele';
@@ -79,8 +80,7 @@ function upsertJsonLd(data: Record<string, unknown>) {
 
 function getBaseUrl(): string {
   if (typeof window === 'undefined') return `${LINKS_SOCIAIS.site}/`;
-  const base = `${window.location.origin}${window.location.pathname}`;
-  return base.endsWith('/') ? base : `${base}/`;
+  return `${window.location.origin}/`;
 }
 
 function resolveDefaultOgImage(): string {
@@ -112,34 +112,48 @@ export function useSeo(route: AppRoute, activePost: Post | null) {
 
     let title = DEFAULT_TITLE;
     let description = DEFAULT_DESCRIPTION;
-    let canonicalUrl = baseUrl;
+    let canonicalUrl = `${baseUrl}home`;
     let ogType: 'website' | 'article' = 'website';
     let ogImage = defaultImage;
     let ogImageAlt = DEFAULT_TITLE;
-    let pagePath = '/';
+    let pagePath = '/home';
 
     if (route.view === 'article' && activePost) {
       title = `${activePost.titulo} | ${SITE_NAME}`;
       description = activePost.resumo;
-      canonicalUrl = `${baseUrl}#/artigo/${activePost.slug}`;
+      canonicalUrl = `${baseUrl}artigo/${activePost.slug}`;
       ogType = 'article';
       ogImage = resolvePostImage(activePost);
       ogImageAlt = activePost.titulo;
       pagePath = `/artigo/${activePost.slug}`;
     } else if (route.view === 'prompts') {
-      title = `Hub de Prompts — ${SITE_NAME} | Gemini, Google Planilhas & Workspace`;
-      description =
-        'Prompts prontos e personalizáveis para copiar e usar no Gemini, Google Planilhas, Excel, Gmail, Google Docs e Apps Script.';
-      canonicalUrl = `${baseUrl}#/prompts`;
-      ogType = 'website';
-      ogImage = defaultImage;
-      ogImageAlt = 'Hub de Prompts — Lais Raniele';
-      pagePath = '/prompts';
+      const sharedPrompt = route.promptId
+        ? promptsData.find((item) => item.id === route.promptId)
+        : null;
+
+      if (sharedPrompt) {
+        title = `${sharedPrompt.titulo} — Hub de Prompts | ${SITE_NAME}`;
+        description = sharedPrompt.descricao;
+        canonicalUrl = `${baseUrl}prompts/${encodeURIComponent(sharedPrompt.id)}`;
+        ogType = 'website';
+        ogImage = defaultImage;
+        ogImageAlt = sharedPrompt.titulo;
+        pagePath = `/prompts/${sharedPrompt.id}`;
+      } else {
+        title = `Hub de Prompts — ${SITE_NAME} | Gemini, Google Planilhas & Workspace`;
+        description =
+          'Prompts prontos e personalizáveis para copiar e usar no Gemini, Google Planilhas, Excel, Gmail, Google Docs e Apps Script.';
+        canonicalUrl = `${baseUrl}prompts`;
+        ogType = 'website';
+        ogImage = defaultImage;
+        ogImageAlt = 'Hub de Prompts — Lais Raniele';
+        pagePath = '/prompts';
+      }
     } else if (route.view === 'about') {
       title = `Sobre Mim — ${SITE_NAME} | Afiliada Google Workspace & IA na Prática`;
       description =
         'Conheça a Lais Raniele: criadora do Planilha Lab, afiliada oficial do Google Workspace e criadora de tutoriais práticos de gestão financeira, Excel, Google Planilhas, automação e IA.';
-      canonicalUrl = `${baseUrl}#/sobre`;
+      canonicalUrl = `${baseUrl}sobre`;
       ogType = 'website';
       ogImage = new URL(
         'assets/aistudio/Gemini_Generated_Image_fa0gefa0gefa0gef__1__db809f31.jpg',
@@ -151,7 +165,7 @@ export function useSeo(route: AppRoute, activePost: Post | null) {
       title = `Política de Privacidade e Cookies | ${SITE_NAME}`;
       description =
         'Saiba como o blog laisraniele.com.br trata cookies, Google Analytics 4, links de afiliados e seus direitos conforme a LGPD.';
-      canonicalUrl = `${baseUrl}#/privacidade`;
+      canonicalUrl = `${baseUrl}privacidade`;
       ogType = 'website';
       ogImage = defaultImage;
       ogImageAlt = title;

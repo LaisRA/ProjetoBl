@@ -36,6 +36,18 @@ export function useTheme() {
   }, [theme]);
 
   const toggleTheme = () => {
+    const root = document.documentElement;
+    const prefersReduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReduced) {
+      root.classList.add('theme-transitioning');
+      window.setTimeout(() => {
+        root.classList.remove('theme-transitioning');
+      }, 320);
+    }
+
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 

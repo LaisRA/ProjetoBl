@@ -1,14 +1,24 @@
 import { ArrowRight, PlayCircle } from 'lucide-react';
+import type { CSSProperties } from 'react';
 import type { Post } from '../data/posts';
 
 interface ArticleCardProps {
   post: Post;
   onOpen: (slug: string) => void;
+  revealDelay?: string;
 }
 
-export function ArticleCard({ post, onOpen }: ArticleCardProps) {
+export function ArticleCard({ post, onOpen, revealDelay }: ArticleCardProps) {
+  const revealStyle = revealDelay
+    ? ({ '--reveal-delay': revealDelay } as CSSProperties)
+    : undefined;
+
   return (
-    <article className="group flex flex-col justify-between rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 transition-colors duration-150 hover:border-[#7C3AED]/60 dark:border-[#2A243D] dark:bg-[#161321] dark:hover:border-[#8B5CF6]/70">
+    <article
+      data-reveal=""
+      style={revealStyle}
+      className="card-interactive group flex flex-col justify-between rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 dark:border-[#2A243D] dark:bg-[#161321]"
+    >
       <div>
         <div className="mb-4 flex items-center justify-between gap-3">
           <span className="inline-block rounded-md bg-[#EDE9FE] px-2.5 py-1 text-xs font-medium text-[#6D28D9] dark:bg-[#8B5CF6]/16 dark:text-[#C4B5FD] whitespace-nowrap">
@@ -24,7 +34,7 @@ export function ArticleCard({ post, onOpen }: ArticleCardProps) {
 
         <h2 className="font-display text-lg sm:text-xl font-semibold leading-snug tracking-tight text-[#18181B] transition-colors duration-150 group-hover:text-[#7C3AED] dark:text-[#F3F4F6] dark:group-hover:text-[#C4B5FD]">
           <a
-            href={`#/artigo/${post.slug}`}
+            href={`/artigo/${post.slug}`}
             onClick={(e) => {
               e.preventDefault();
               onOpen(post.slug);

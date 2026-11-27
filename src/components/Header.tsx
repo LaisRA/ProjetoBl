@@ -41,10 +41,10 @@ export function Header({
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-2 px-3 sm:gap-6 sm:px-6 md:gap-8">
         {/* Zone 1: Brand Logo & Wordmark */}
         <a
-          href="#/"
+          href="/home"
           onClick={(e) => {
             e.preventDefault();
-            handleNav('#/');
+            handleNav('/home');
           }}
           translate="no"
           className="notranslate inline-flex min-w-0 items-center gap-1.5 font-display text-lg font-bold tracking-tight text-[#18181B] transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7C3AED] sm:gap-2.5 sm:text-xl dark:text-[#F3F4F6] dark:focus-visible:outline-[#8B5CF6] whitespace-nowrap shrink-0"
@@ -72,42 +72,45 @@ export function Header({
           className="hidden md:flex items-center gap-7 text-sm font-medium"
         >
           <a
-            href="#/"
+            href="/home"
+            data-active={isTutorialsActive ? 'true' : undefined}
             onClick={(e) => {
               e.preventDefault();
-              handleNav('#/');
+              handleNav('/home');
             }}
-            className={`whitespace-nowrap shrink-0 transition-colors duration-150 ${
+            className={`nav-link-underline whitespace-nowrap shrink-0 transition-colors duration-150 ${
               isTutorialsActive
-                ? 'text-[#7C3AED] dark:text-[#8B5CF6]'
+                ? 'text-[#7C3AED] dark:text-[#C4B5FD]'
                 : 'text-[#52525B] hover:text-[#18181B] dark:text-[#9CA3AF] dark:hover:text-[#F3F4F6]'
             }`}
           >
             Tutoriais
           </a>
           <a
-            href="#/prompts"
+            href="/prompts"
+            data-active={isPromptsActive ? 'true' : undefined}
             onClick={(e) => {
               e.preventDefault();
-              handleNav('#/prompts');
+              handleNav('/prompts');
             }}
-            className={`whitespace-nowrap shrink-0 transition-colors duration-150 ${
+            className={`nav-link-underline whitespace-nowrap shrink-0 transition-colors duration-150 ${
               isPromptsActive
-                ? 'text-[#7C3AED] dark:text-[#8B5CF6]'
+                ? 'text-[#7C3AED] dark:text-[#C4B5FD]'
                 : 'text-[#52525B] hover:text-[#18181B] dark:text-[#9CA3AF] dark:hover:text-[#F3F4F6]'
             }`}
           >
             Prompts
           </a>
           <a
-            href="#/sobre"
+            href="/sobre"
+            data-active={isAboutActive ? 'true' : undefined}
             onClick={(e) => {
               e.preventDefault();
-              handleNav('#/sobre');
+              handleNav('/sobre');
             }}
-            className={`whitespace-nowrap shrink-0 transition-colors duration-150 ${
+            className={`nav-link-underline whitespace-nowrap shrink-0 transition-colors duration-150 ${
               isAboutActive
-                ? 'text-[#7C3AED] dark:text-[#8B5CF6]'
+                ? 'text-[#7C3AED] dark:text-[#C4B5FD]'
                 : 'text-[#52525B] hover:text-[#18181B] dark:text-[#9CA3AF] dark:hover:text-[#F3F4F6]'
             }`}
           >
@@ -117,7 +120,7 @@ export function Header({
             href={LINKS_SOCIAIS.youtube}
             target="_blank"
             rel="noopener noreferrer"
-            className="whitespace-nowrap shrink-0 text-[#52525B] transition-colors duration-150 hover:text-[#18181B] dark:text-[#9CA3AF] dark:hover:text-[#F3F4F6]"
+            className="nav-link-underline whitespace-nowrap shrink-0 text-[#52525B] transition-colors duration-150 hover:text-[#18181B] dark:text-[#9CA3AF] dark:hover:text-[#F3F4F6]"
           >
             YouTube
           </a>
@@ -126,7 +129,7 @@ export function Header({
             target="_blank"
             rel="noopener noreferrer"
             title={`WhatsApp ${LINKS_SOCIAIS.whatsappNumero}`}
-            className="whitespace-nowrap shrink-0 text-[#52525B] transition-colors duration-150 hover:text-[#18181B] dark:text-[#9CA3AF] dark:hover:text-[#F3F4F6]"
+            className="nav-link-underline whitespace-nowrap shrink-0 text-[#52525B] transition-colors duration-150 hover:text-[#18181B] dark:text-[#9CA3AF] dark:hover:text-[#F3F4F6]"
           >
             WhatsApp
           </a>
@@ -151,16 +154,22 @@ export function Header({
             title={
               theme === 'light' ? 'Ativar modo escuro' : 'Ativar modo claro'
             }
-            className="inline-flex h-9 w-9 items-center justify-center gap-2 rounded-lg border border-[#E4E4E7] bg-[#FFFFFF] text-xs font-medium text-[#18181B] transition-colors duration-150 hover:border-[#7C3AED]/50 hover:text-[#7C3AED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] sm:h-10 sm:w-auto sm:px-3 dark:border-[#2A243D] dark:bg-[#161321] dark:text-[#F3F4F6] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#C4B5FD] dark:focus-visible:outline-[#8B5CF6] whitespace-nowrap shrink-0 cursor-pointer"
+            className="group inline-flex h-9 w-9 items-center justify-center gap-2 rounded-lg border border-[#E4E4E7] bg-[#FFFFFF] text-xs font-medium text-[#18181B] transition-colors duration-150 hover:border-[#7C3AED]/50 hover:text-[#7C3AED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] sm:h-10 sm:w-auto sm:px-3 dark:border-[#2A243D] dark:bg-[#161321] dark:text-[#F3F4F6] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#C4B5FD] dark:focus-visible:outline-[#8B5CF6] whitespace-nowrap shrink-0 cursor-pointer"
           >
             {theme === 'light' ? (
               <>
-                <Moon className="h-4 w-4 text-[#52525B]" aria-hidden="true" />
+                <Moon
+                  className="h-4 w-4 text-[#52525B] transition-transform duration-300 group-hover:-rotate-12 group-hover:text-[#7C3AED]"
+                  aria-hidden="true"
+                />
                 <span className="hidden sm:inline">Escuro</span>
               </>
             ) : (
               <>
-                <Sun className="h-4 w-4 text-[#C4B5FD]" aria-hidden="true" />
+                <Sun
+                  className="h-4 w-4 text-[#C4B5FD] transition-transform duration-300 group-hover:rotate-45"
+                  aria-hidden="true"
+                />
                 <span className="hidden sm:inline">Claro</span>
               </>
             )}
@@ -190,10 +199,10 @@ export function Header({
         >
           <div className="flex flex-col gap-1">
             <a
-              href="#/"
+              href="/home"
               onClick={(e) => {
                 e.preventDefault();
-                handleNav('#/');
+                handleNav('/home');
               }}
               className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 isTutorialsActive
@@ -204,10 +213,10 @@ export function Header({
               Tutoriais
             </a>
             <a
-              href="#/prompts"
+              href="/prompts"
               onClick={(e) => {
                 e.preventDefault();
-                handleNav('#/prompts');
+                handleNav('/prompts');
               }}
               className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 isPromptsActive
@@ -218,10 +227,10 @@ export function Header({
               Hub de Prompts
             </a>
             <a
-              href="#/sobre"
+              href="/sobre"
               onClick={(e) => {
                 e.preventDefault();
-                handleNav('#/sobre');
+                handleNav('/sobre');
               }}
               className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 isAboutActive

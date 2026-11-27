@@ -7,7 +7,7 @@ import {
   Lightbulb,
   Share2,
 } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import type { BlocoConteudo, Post } from '../data/posts';
 import { CodeBlock } from './CodeBlock';
 import { RichText } from './RichText';
@@ -25,26 +25,8 @@ export function ArticleView({
   onBack,
   onOpenPost,
 }: ArticleViewProps) {
-  const [progress, setProgress] = useState(0);
   const [linkCopied, setLinkCopied] = useState(false);
   const shareTimeoutRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      if (docHeight <= 0) {
-        setProgress(0);
-        return;
-      }
-      setProgress(Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)));
-    };
-
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [post.slug]);
 
   useEffect(() => {
     setLinkCopied(false);
@@ -60,7 +42,7 @@ export function ArticleView({
   }, [post.slug]);
 
   const handleShareLink = async () => {
-    const directUrl = `${window.location.origin}${window.location.pathname}#/artigo/${post.slug}`;
+    const directUrl = `${window.location.origin}/artigo/${post.slug}`;
     let copied = false;
 
     if (navigator.clipboard && window.isSecureContext) {
@@ -218,17 +200,6 @@ export function ArticleView({
 
   return (
     <>
-      {/* Subtle reading progress indicator */}
-      <div
-        aria-hidden="true"
-        className="fixed top-16 left-0 z-30 h-0.5 w-full bg-transparent"
-      >
-        <div
-          className="h-full bg-[#7C3AED] transition-transform duration-100 origin-left dark:bg-[#8B5CF6]"
-          style={{ transform: `scaleX(${progress / 100})` }}
-        />
-      </div>
-
       <article className="mx-auto max-w-3xl px-4 pt-8 pb-8 sm:px-6 sm:pt-12">
         {/* Top Action Row */}
         <div className="mb-8 flex items-center justify-between gap-4">
@@ -266,7 +237,7 @@ export function ArticleView({
         </div>
 
         {/* Article Header */}
-        <header className="border-b border-[#E4E4E7] pb-8 dark:border-[#2A243D]">
+        <header className="hero-enter hero-delay-1 border-b border-[#E4E4E7] pb-8 dark:border-[#2A243D]">
           <span className="inline-block rounded-md bg-[#EDE9FE] px-3 py-1 text-xs font-medium text-[#6D28D9] dark:bg-[#8B5CF6]/16 dark:text-[#C4B5FD]">
             {post.categoria}
           </span>
@@ -410,9 +381,10 @@ export function ArticleView({
           >
             {prevPost ? (
               <button
+                data-reveal=""
                 type="button"
                 onClick={() => onOpenPost(prevPost.slug)}
-                className="group flex flex-col items-start rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] p-4 text-left transition-colors hover:border-[#7C3AED]/60 dark:border-[#2A243D] dark:bg-[#161321] dark:hover:border-[#8B5CF6]/60 cursor-pointer"
+                className="card-interactive group flex flex-col items-start rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] p-4 text-left dark:border-[#2A243D] dark:bg-[#161321] cursor-pointer"
               >
                 <span className="inline-flex items-center gap-1 text-xs font-medium text-[#52525B] dark:text-[#9CA3AF]">
                   <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
@@ -428,9 +400,11 @@ export function ArticleView({
 
             {nextPost && (
               <button
+                data-reveal=""
+                style={{ '--reveal-delay': '0.1s' } as CSSProperties}
                 type="button"
                 onClick={() => onOpenPost(nextPost.slug)}
-                className="group flex flex-col items-end rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] p-4 text-right transition-colors hover:border-[#7C3AED]/60 dark:border-[#2A243D] dark:bg-[#161321] dark:hover:border-[#8B5CF6]/60 cursor-pointer"
+                className="card-interactive group flex flex-col items-end rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] p-4 text-right dark:border-[#2A243D] dark:bg-[#161321] cursor-pointer"
               >
                 <span className="inline-flex items-center gap-1 text-xs font-medium text-[#52525B] dark:text-[#9CA3AF]">
                   Próximo tutorial

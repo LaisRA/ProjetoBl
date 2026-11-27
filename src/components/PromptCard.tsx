@@ -2,11 +2,12 @@ import {
   Check,
   Copy,
   ExternalLink,
+  Share2,
   SlidersHorizontal,
   Sparkles,
   Star,
 } from 'lucide-react';
-import { Fragment } from 'react';
+import { Fragment, type CSSProperties } from 'react';
 import type { GoogleAccent, PromptItem } from '../data/prompts';
 
 function getGoogleAccentTextClass(accent: GoogleAccent): string {
@@ -75,9 +76,12 @@ interface PromptCardProps {
   item: PromptItem;
   isFavorited: boolean;
   isCopied: boolean;
+  isShared: boolean;
   variableCount: number;
   geminiUrl: string;
+  revealDelay?: string;
   onToggleFavorite: (id: string) => void;
+  onShare: (item: PromptItem) => void;
   onCopy: (item: PromptItem) => void;
   onCustomize: (item: PromptItem) => void;
 }
@@ -86,16 +90,27 @@ export function PromptCard({
   item,
   isFavorited,
   isCopied,
+  isShared,
   variableCount,
   geminiUrl,
+  revealDelay,
   onToggleFavorite,
+  onShare,
   onCopy,
   onCustomize,
 }: PromptCardProps) {
+  const revealStyle = revealDelay
+    ? ({ '--reveal-delay': revealDelay } as CSSProperties)
+    : undefined;
+
   return (
-    <article className="flex flex-col justify-between rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] p-3 transition-colors duration-150 hover:border-[#7C3AED]/45 dark:border-[#2A243D] dark:bg-[#161321] dark:hover:border-[#8B5CF6]/55">
+    <article
+      data-reveal=""
+      style={revealStyle}
+      className="card-interactive flex flex-col justify-between rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] p-3 dark:border-[#2A243D] dark:bg-[#161321]"
+    >
       <div>
-        {/* Compact Metadata Row + Favorite Button */}
+        {/* Compact Metadata Row + Share & Favorite Buttons */}
         <div className="flex items-center justify-between gap-2">
           <div className="flex min-w-0 items-center gap-1 text-[11px] font-medium leading-none">
             <span
@@ -114,29 +129,51 @@ export function PromptCard({
             </span>
           </div>
 
-          <button
-            type="button"
-            onClick={() => onToggleFavorite(item.id)}
-            aria-label={
-              isFavorited
-                ? `Remover "${item.titulo}" dos favoritos`
-                : `Salvar "${item.titulo}" nos favoritos`
-            }
-            aria-pressed={isFavorited}
-            title={
-              isFavorited ? 'Remover dos favoritos' : 'Salvar nos favoritos'
-            }
-            className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#7C3AED] cursor-pointer ${
-              isFavorited
-                ? 'border-[#FBBC05]/50 bg-[#FBBC05]/12 text-[#D97706] dark:text-[#FDE047]'
-                : 'border-[#E4E4E7] bg-[#FAFAFC] text-[#52525B] hover:border-[#FBBC05]/60 hover:text-[#D97706] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#9CA3AF] dark:hover:text-[#FDE047]'
-            }`}
-          >
-            <Star
-              className={`h-3 w-3 ${isFavorited ? 'fill-current' : ''}`}
-              aria-hidden="true"
-            />
-          </button>
+          <div className="flex shrink-0 items-center gap-1">
+            <button
+              type="button"
+              onClick={() => onShare(item)}
+              aria-label={`Compartilhar link direto do prompt "${item.titulo}"`}
+              title={
+                isShared ? 'Link copiado!' : 'Compartilhar link deste prompt'
+              }
+              className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#7C3AED] cursor-pointer ${
+                isShared
+                  ? 'border-[#10B981]/50 bg-[#10B981]/12 text-[#059669] dark:text-[#34D399]'
+                  : 'border-[#E4E4E7] bg-[#FAFAFC] text-[#52525B] hover:border-[#7C3AED]/60 hover:text-[#7C3AED] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]'
+              }`}
+            >
+              {isShared ? (
+                <Check className="h-3 w-3" aria-hidden="true" />
+              ) : (
+                <Share2 className="h-3 w-3" aria-hidden="true" />
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onToggleFavorite(item.id)}
+              aria-label={
+                isFavorited
+                  ? `Remover "${item.titulo}" dos favoritos`
+                  : `Salvar "${item.titulo}" nos favoritos`
+              }
+              aria-pressed={isFavorited}
+              title={
+                isFavorited ? 'Remover dos favoritos' : 'Salvar nos favoritos'
+              }
+              className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#7C3AED] cursor-pointer ${
+                isFavorited
+                  ? 'border-[#FBBC05]/50 bg-[#FBBC05]/12 text-[#D97706] dark:text-[#FDE047]'
+                  : 'border-[#E4E4E7] bg-[#FAFAFC] text-[#52525B] hover:border-[#FBBC05]/60 hover:text-[#D97706] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#9CA3AF] dark:hover:text-[#FDE047]'
+              }`}
+            >
+              <Star
+                className={`h-3 w-3 ${isFavorited ? 'fill-current' : ''}`}
+                aria-hidden="true"
+              />
+            </button>
+          </div>
         </div>
 
         {/* Compact Title & Description */}
@@ -201,7 +238,7 @@ export function PromptCard({
           target="_blank"
           rel="noopener noreferrer"
           title="Abrir no Gemini"
-          className="inline-flex h-7 items-center gap-1 rounded-md px-1.5 text-[11px] font-medium text-[#52525B] transition-colors hover:text-[#1D4ED8] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#4285F4] dark:text-[#9CA3AF] dark:hover:text-[#93C5FD] whitespace-nowrap shrink-0"
+          className="btn-tactile inline-flex h-7 items-center gap-1 rounded-md px-1.5 text-[11px] font-medium text-[#52525B] transition-colors hover:text-[#1D4ED8] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#4285F4] dark:text-[#9CA3AF] dark:hover:text-[#93C5FD] whitespace-nowrap shrink-0"
         >
           <Sparkles className="h-3 w-3 text-[#4285F4]" aria-hidden="true" />
           <span>Gemini</span>

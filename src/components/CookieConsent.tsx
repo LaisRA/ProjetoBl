@@ -83,7 +83,7 @@ export function CookieConsent({
         Usamos cookies de medição (Google Analytics) para melhorar nossos
         tutoriais. Leia nossa{' '}
         <a
-          href="#/privacidade"
+          href="/privacidade"
           onClick={(e) => {
             e.preventDefault();
             onOpenPrivacy();

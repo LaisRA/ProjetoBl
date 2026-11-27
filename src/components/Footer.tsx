@@ -11,6 +11,7 @@ export function Footer({ onNavigate }: FooterProps) {
       <div className="mx-auto max-w-5xl px-4 pt-12 pb-8 sm:px-6">
         {/* Google Workspace Affiliate CTA Card */}
         <section
+          data-reveal=""
           aria-labelledby="workspace-footer-cta"
           className="mb-10 rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 sm:p-8 dark:border-[#2A243D] dark:bg-[#161321]"
         >
@@ -40,7 +41,7 @@ export function Footer({ onNavigate }: FooterProps) {
                 href={LINKS_SOCIAIS.workspaceAfiliado}
                 target="_blank"
                 rel="noopener noreferrer sponsored"
-                className="inline-flex h-11 items-center gap-2 rounded-lg bg-[#7C3AED] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#6D28D9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] whitespace-nowrap"
+                className="btn-cta-gradient btn-tactile inline-flex h-11 items-center gap-2 rounded-lg px-5 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] whitespace-nowrap"
               >
                 <span>Conhecer o Workspace</span>
                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -51,7 +52,7 @@ export function Footer({ onNavigate }: FooterProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 title={`Pedir código promocional pelo WhatsApp ${LINKS_SOCIAIS.whatsappNumero}`}
-                className="inline-flex h-11 items-center gap-2 rounded-lg border border-[#E4E4E7] bg-[#FAFAFC] px-4 text-sm font-medium text-[#18181B] transition-colors hover:border-[#7C3AED]/60 hover:text-[#7C3AED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#F3F4F6] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#C4B5FD] whitespace-nowrap"
+                className="btn-tactile inline-flex h-11 items-center gap-2 rounded-lg border border-[#E4E4E7] bg-[#FAFAFC] px-4 text-sm font-medium text-[#18181B] transition-colors hover:border-[#7C3AED]/60 hover:text-[#7C3AED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#F3F4F6] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#C4B5FD] whitespace-nowrap"
               >
                 <MessageCircle className="h-4 w-4" aria-hidden="true" />
                 <span>Pedir cupom no WhatsApp</span>
@@ -64,10 +65,10 @@ export function Footer({ onNavigate }: FooterProps) {
         <div className="flex flex-col items-start justify-between gap-4 border-t border-[#E4E4E7] pt-6 sm:flex-row sm:items-center dark:border-[#2A243D]">
           <div className="flex items-center gap-3">
             <a
-              href="#/"
+              href="/home"
               onClick={(e) => {
                 e.preventDefault();
-                onNavigate('#/');
+                onNavigate('/home');
               }}
               aria-label="Lais Raniele — Início"
               className="inline-flex h-8 w-8 shrink-0 items-center justify-center transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:focus-visible:outline-[#8B5CF6]"
@@ -90,32 +91,32 @@ export function Footer({ onNavigate }: FooterProps) {
 
           <div className="flex flex-wrap items-center gap-6 text-sm font-medium">
             <a
-              href="#/prompts"
+              href="/prompts"
               onClick={(e) => {
                 e.preventDefault();
-                onNavigate('#/prompts');
+                onNavigate('/prompts');
               }}
-              className="text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
+              className="nav-link-underline text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
             >
               Prompts
             </a>
             <a
-              href="#/sobre"
+              href="/sobre"
               onClick={(e) => {
                 e.preventDefault();
-                onNavigate('#/sobre');
+                onNavigate('/sobre');
               }}
-              className="text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
+              className="nav-link-underline text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
             >
               Sobre Mim
             </a>
             <a
-              href="#/privacidade"
+              href="/privacidade"
               onClick={(e) => {
                 e.preventDefault();
-                onNavigate('#/privacidade');
+                onNavigate('/privacidade');
               }}
-              className="text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
+              className="nav-link-underline text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
             >
               Privacidade
             </a>
@@ -123,7 +124,7 @@ export function Footer({ onNavigate }: FooterProps) {
               href={LINKS_SOCIAIS.youtube}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
+              className="nav-link-underline text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
             >
               YouTube
             </a>
@@ -131,7 +132,7 @@ export function Footer({ onNavigate }: FooterProps) {
               href={LINKS_SOCIAIS.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
+              className="nav-link-underline text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
             >
               Instagram
             </a>
@@ -140,7 +141,7 @@ export function Footer({ onNavigate }: FooterProps) {
               target="_blank"
               rel="noopener noreferrer"
               title={`WhatsApp ${LINKS_SOCIAIS.whatsappNumero}`}
-              className="text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
+              className="nav-link-underline text-[#52525B] transition-colors hover:text-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD]"
             >
               WhatsApp
             </a>

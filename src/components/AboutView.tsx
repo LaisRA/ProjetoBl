@@ -16,7 +16,7 @@ import {
   Video,
   Youtube,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { LINKS_SOCIAIS } from '../data/posts';
 
 interface AboutViewProps {
@@ -151,21 +151,21 @@ export function AboutView({ onBack }: AboutViewProps) {
       <section aria-labelledby="sobre-hero-title">
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-6">
-            <p className="text-xs sm:text-sm font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
+            <p className="hero-enter hero-delay-1 text-xs sm:text-sm font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
               Afiliada Google Workspace · Google Fan Girl
             </p>
 
             <h1
               id="sobre-hero-title"
-              className="mt-3 font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.12] tracking-tight text-[#18181B] dark:text-[#F3F4F6]"
+              className="hero-enter hero-delay-2 mt-3 font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.12] tracking-tight text-[#18181B] dark:text-[#F3F4F6]"
             >
               Olá! Eu sou a{' '}
-              <span className="notranslate text-[#7C3AED] dark:text-[#A78BFA]">
+              <span className="notranslate text-gradient-animated">
                 Lais Raniele
               </span>
             </h1>
 
-            <p className="mt-5 text-base sm:text-lg leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
+            <p className="hero-enter hero-delay-3 mt-5 text-base sm:text-lg leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
               Transformo planilhas, automação comercial e Inteligência Artificial
               em ferramentas simples para organizar finanças, economizar tempo e
               gerar resultados reais — sem precisar gastar fortunas com softwares
@@ -173,12 +173,12 @@ export function AboutView({ onBack }: AboutViewProps) {
             </p>
 
             {/* Primary & Secondary CTAs */}
-            <div className="mt-7 flex flex-wrap items-center gap-3">
+            <div className="hero-enter hero-delay-4 mt-7 flex flex-wrap items-center gap-3">
               <a
                 href={ABOUT_LINKS.googleWorkspaceAfiliada}
                 target="_blank"
                 rel="noopener noreferrer sponsored"
-                className="inline-flex h-11 items-center gap-2 rounded-xl bg-[#7C3AED] px-5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-[#6D28D9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] whitespace-nowrap"
+                className="btn-cta-gradient btn-tactile inline-flex h-11 items-center gap-2 rounded-xl px-5 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] whitespace-nowrap"
               >
                 <span>Conhecer o Google Workspace</span>
                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -196,8 +196,8 @@ export function AboutView({ onBack }: AboutViewProps) {
           </div>
 
           {/* Image 1: Setup Banner */}
-          <div className="lg:col-span-6">
-            <div className="group overflow-hidden rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] shadow-sm transition-transform duration-300 hover:-translate-y-0.5 dark:border-[#2A243D] dark:bg-[#161321]">
+          <div className="hero-enter hero-delay-3 lg:col-span-6">
+            <div className="card-interactive group overflow-hidden rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] shadow-sm dark:border-[#2A243D] dark:bg-[#161321]">
               {/* Subtle Google 4-color top hairline */}
               <div aria-hidden="true" className="grid h-[3px] w-full grid-cols-4">
                 <span className="bg-[#4285F4]" />
@@ -241,6 +241,7 @@ export function AboutView({ onBack }: AboutViewProps) {
 
       {/* 2. MINHA HISTÓRIA (with Image 2 — Standing Character) */}
       <section
+        data-reveal=""
         aria-labelledby="minha-historia-title"
         className="mt-16 border-t border-[#E4E4E7] pt-14 dark:border-[#2A243D]"
       >
@@ -353,6 +354,7 @@ export function AboutView({ onBack }: AboutViewProps) {
 
       {/* 3. GOOGLE FAN GIRL & AFILIADA GOOGLE WORKSPACE (Card de Destaque) */}
       <section
+        data-reveal=""
         aria-labelledby="google-fangirl-title"
         className="mt-16 overflow-hidden rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] dark:border-[#2A243D] dark:bg-[#161321]"
       >
@@ -424,7 +426,7 @@ export function AboutView({ onBack }: AboutViewProps) {
                   href={ABOUT_LINKS.googleWorkspaceAfiliada}
                   target="_blank"
                   rel="noopener noreferrer sponsored"
-                  className="inline-flex h-11 items-center gap-2 rounded-xl bg-[#7C3AED] px-5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-[#6D28D9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] whitespace-nowrap"
+                  className="btn-cta-gradient btn-tactile inline-flex h-11 items-center gap-2 rounded-xl px-5 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] whitespace-nowrap"
                 >
                   <span>Assinar Google Workspace com meu link de afiliada</span>
                   <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -434,7 +436,7 @@ export function AboutView({ onBack }: AboutViewProps) {
                   href={ABOUT_LINKS.whatsappCupom}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-11 items-center gap-2 rounded-xl border border-[#E4E4E7] bg-[#FAFAFC] px-4 text-sm font-medium text-[#18181B] transition-colors hover:border-[#7C3AED]/60 hover:text-[#7C3AED] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#F3F4F6] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#C4B5FD] whitespace-nowrap"
+                  className="btn-tactile inline-flex h-11 items-center gap-2 rounded-xl border border-[#E4E4E7] bg-[#FAFAFC] px-4 text-sm font-medium text-[#18181B] transition-colors hover:border-[#7C3AED]/60 hover:text-[#7C3AED] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#F3F4F6] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#C4B5FD] whitespace-nowrap"
                 >
                   <MessageCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
                   <span>Pedir cupom no WhatsApp</span>
@@ -499,7 +501,7 @@ export function AboutView({ onBack }: AboutViewProps) {
         aria-labelledby="projetos-title"
         className="mt-16 scroll-mt-24 border-t border-[#E4E4E7] pt-14 dark:border-[#2A243D]"
       >
-        <div className="max-w-2xl">
+        <div data-reveal="" className="max-w-2xl">
           <p className="text-xs sm:text-sm font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
             Projetos Reais
           </p>
@@ -518,10 +520,11 @@ export function AboutView({ onBack }: AboutViewProps) {
         <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
           {/* Projeto 1: Planilha Lab */}
           <a
+            data-reveal=""
             href={ABOUT_LINKS.planilhaLab}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col justify-between rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 transition-all duration-150 hover:-translate-y-0.5 hover:border-[#34A853]/60 dark:border-[#2A243D] dark:bg-[#161321] dark:hover:border-[#34A853]/60"
+            className="card-interactive group flex flex-col justify-between rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 dark:border-[#2A243D] dark:bg-[#161321]"
           >
             <div>
               <div className="flex items-center justify-between gap-3">
@@ -552,10 +555,12 @@ export function AboutView({ onBack }: AboutViewProps) {
           {/* Projeto 2: Trilhas da Informática */}
           {ABOUT_LINKS.trilhasInformatica ? (
             <a
+              data-reveal=""
+              style={{ '--reveal-delay': '0.1s' } as CSSProperties}
               href={ABOUT_LINKS.trilhasInformatica}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col justify-between rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 transition-all duration-150 hover:-translate-y-0.5 hover:border-[#4285F4]/60 dark:border-[#2A243D] dark:bg-[#161321] dark:hover:border-[#4285F4]/60"
+              className="card-interactive group flex flex-col justify-between rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 dark:border-[#2A243D] dark:bg-[#161321]"
             >
               <div>
                 <div className="flex items-center justify-between gap-3">
@@ -581,9 +586,11 @@ export function AboutView({ onBack }: AboutViewProps) {
             </a>
           ) : (
             <button
+              data-reveal=""
+              style={{ '--reveal-delay': '0.1s' } as CSSProperties}
               type="button"
               onClick={onBack}
-              className="group flex flex-col justify-between rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-[#4285F4]/60 dark:border-[#2A243D] dark:bg-[#161321] dark:hover:border-[#4285F4]/60 cursor-pointer"
+              className="card-interactive group flex flex-col justify-between rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 text-left dark:border-[#2A243D] dark:bg-[#161321] cursor-pointer"
             >
               <div>
                 <div className="flex items-center justify-between gap-3">
@@ -611,10 +618,11 @@ export function AboutView({ onBack }: AboutViewProps) {
 
           {/* Projeto 3: Blog & Canal Lais Raniele */}
           <a
+            data-reveal=""
             href={ABOUT_LINKS.youtube}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col justify-between rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 transition-all duration-150 hover:-translate-y-0.5 hover:border-[#EA4335]/60 dark:border-[#2A243D] dark:bg-[#161321] dark:hover:border-[#EA4335]/60"
+            className="card-interactive group flex flex-col justify-between rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 dark:border-[#2A243D] dark:bg-[#161321]"
           >
             <div>
               <div className="flex items-center justify-between gap-3">
@@ -645,9 +653,11 @@ export function AboutView({ onBack }: AboutViewProps) {
 
           {/* Projeto 4: Automações & Experimentos com IA */}
           <button
+            data-reveal=""
+            style={{ '--reveal-delay': '0.1s' } as CSSProperties}
             type="button"
             onClick={onBack}
-            className="group flex flex-col justify-between rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-[#FBBC05]/70 dark:border-[#2A243D] dark:bg-[#161321] dark:hover:border-[#FBBC05]/60 cursor-pointer"
+            className="card-interactive group flex flex-col justify-between rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] p-6 text-left dark:border-[#2A243D] dark:bg-[#161321] cursor-pointer"
           >
             <div>
               <div className="flex items-center justify-between gap-3">
@@ -676,6 +686,7 @@ export function AboutView({ onBack }: AboutViewProps) {
 
       {/* 5. SEÇÃO FINAL / CHAMADA PARA AÇÃO */}
       <section
+        data-reveal=""
         aria-labelledby="cta-final-title"
         className="mt-16 rounded-2xl border border-[#E4E4E7] bg-[#EDE9FE]/55 p-6 sm:p-8 lg:p-10 dark:border-[#2A243D] dark:bg-[#161321]"
       >
@@ -702,7 +713,7 @@ export function AboutView({ onBack }: AboutViewProps) {
               href={ABOUT_LINKS.youtube}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-11 items-center gap-2 rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] px-4 text-sm font-semibold text-[#18181B] transition-colors hover:border-[#EA4335]/60 hover:text-[#B91C1C] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#F3F4F6] dark:hover:border-[#EA4335]/60 dark:hover:text-[#FCA5A5] whitespace-nowrap"
+              className="btn-tactile inline-flex h-11 items-center gap-2 rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] px-4 text-sm font-semibold text-[#18181B] transition-colors hover:border-[#EA4335]/60 hover:text-[#B91C1C] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#F3F4F6] dark:hover:border-[#EA4335]/60 dark:hover:text-[#FCA5A5] whitespace-nowrap"
             >
               <Youtube className="h-4 w-4 text-[#EA4335]" aria-hidden="true" />
               <span>YouTube</span>
@@ -721,7 +732,7 @@ export function AboutView({ onBack }: AboutViewProps) {
               href={ABOUT_LINKS.googleWorkspaceAfiliada}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="inline-flex h-11 items-center gap-2 rounded-xl bg-[#7C3AED] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#6D28D9] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] whitespace-nowrap"
+              className="btn-cta-gradient btn-tactile inline-flex h-11 items-center gap-2 rounded-xl px-5 text-sm font-semibold text-white whitespace-nowrap"
             >
               <span>Google Workspace</span>
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
