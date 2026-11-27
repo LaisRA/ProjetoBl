@@ -494,11 +494,11 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
   ];
 
   const firstBatch =
-    filteredPrompts.length > 4
-      ? filteredPrompts.slice(0, 4)
+    filteredPrompts.length > 6
+      ? filteredPrompts.slice(0, 6)
       : filteredPrompts;
   const secondBatch =
-    filteredPrompts.length > 4 ? filteredPrompts.slice(4) : [];
+    filteredPrompts.length > 6 ? filteredPrompts.slice(6) : [];
 
   const renderPromptCard = (item: PromptItem) => {
     const isFavorited = favoriteIds.includes(item.id);
@@ -508,22 +508,22 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
     return (
       <article
         key={item.id}
-        className="flex flex-col justify-between rounded-2xl border border-[#E4E4E7] bg-[#FFFFFF] p-5 sm:p-6 transition-colors duration-150 hover:border-[#7C3AED]/45 dark:border-[#2A243D] dark:bg-[#161321] dark:hover:border-[#8B5CF6]/55"
+        className="flex flex-col justify-between rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] p-4 transition-colors duration-150 hover:border-[#7C3AED]/45 dark:border-[#2A243D] dark:bg-[#161321] dark:hover:border-[#8B5CF6]/55"
       >
         <div>
           {/* Top metadata row: Tool & Category + Favorite toggle */}
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-medium">
-              <span className={getGoogleAccentTextClass(item.corGoogle)}>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex min-w-0 items-center gap-1.5 text-[11px] font-medium">
+              <span className={`truncate ${getGoogleAccentTextClass(item.corGoogle)}`}>
                 {item.ferramenta}
               </span>
               <span
                 aria-hidden="true"
-                className="text-[#D4D4D8] dark:text-[#3F3A52]"
+                className="shrink-0 text-[#D4D4D8] dark:text-[#3F3A52]"
               >
                 ·
               </span>
-              <span className="text-[#52525B] dark:text-[#9CA3AF]">
+              <span className="truncate text-[#52525B] dark:text-[#9CA3AF]">
                 {item.categoria}
               </span>
             </div>
@@ -538,29 +538,29 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
               }
               aria-pressed={isFavorited}
               title={isFavorited ? 'Remover dos favoritos' : 'Salvar nos favoritos'}
-              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition-colors duration-150 cursor-pointer ${
+              className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border transition-colors duration-150 cursor-pointer ${
                 isFavorited
                   ? 'border-[#FBBC05]/50 bg-[#FBBC05]/12 text-[#D97706] dark:text-[#FDE047]'
                   : 'border-[#E4E4E7] bg-[#FAFAFC] text-[#52525B] hover:border-[#FBBC05]/60 hover:text-[#D97706] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#9CA3AF] dark:hover:text-[#FDE047]'
               }`}
             >
               <Star
-                className={`h-4 w-4 ${isFavorited ? 'fill-current' : ''}`}
+                className={`h-3.5 w-3.5 ${isFavorited ? 'fill-current' : ''}`}
                 aria-hidden="true"
               />
             </button>
           </div>
 
-          {/* Title & 1-line Description */}
-          <h3 className="mt-3 font-display text-lg font-bold leading-snug text-[#18181B] dark:text-[#F3F4F6]">
+          {/* Title & Description */}
+          <h3 className="mt-2 font-display text-[15px] font-bold leading-snug text-[#18181B] line-clamp-2 dark:text-[#F3F4F6]">
             {item.titulo}
           </h3>
-          <p className="mt-1.5 text-sm leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
+          <p className="mt-1 text-xs leading-relaxed text-[#52525B] line-clamp-2 dark:text-[#9CA3AF]">
             {item.descricao}
           </p>
 
-          {/* Prompt Preview Box with Highlighted [VARIABLES] */}
-          <div className="mt-4 max-h-48 overflow-y-auto code-scroll whitespace-pre-line rounded-xl border border-[#E4E4E7] bg-[#FAFAFC] p-3.5 text-[13px] leading-relaxed text-[#27272A] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#D1D5DB]">
+          {/* Compact Uniform Prompt Preview Box with Highlighted [VARIABLES] */}
+          <div className="mt-2.5 h-24 overflow-y-auto code-scroll whitespace-pre-line rounded-lg border border-[#E4E4E7] bg-[#FAFAFC] p-2.5 text-xs leading-relaxed text-[#27272A] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#D1D5DB]">
             <HighlightedPromptText
               text={item.prompt}
               allowedVariables={item.variaveis}
@@ -568,13 +568,13 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
           </div>
         </div>
 
-        {/* Action Buttons Row */}
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-[#E4E4E7]/80 pt-4 dark:border-[#2A243D]/80">
-          <div className="flex flex-wrap items-center gap-2">
+        {/* Compact Action Buttons Row */}
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-1.5 border-t border-[#E4E4E7]/80 pt-3 dark:border-[#2A243D]/80">
+          <div className="flex items-center gap-1.5">
             <button
               type="button"
               onClick={() => handleCopyPrompt(item)}
-              className={`inline-flex h-10 items-center gap-1.5 rounded-lg px-3.5 text-xs font-semibold text-white transition-colors duration-150 whitespace-nowrap cursor-pointer ${
+              className={`inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-white transition-colors duration-150 whitespace-nowrap cursor-pointer ${
                 isCopied
                   ? 'bg-[#10B981]'
                   : 'bg-[#7C3AED] hover:bg-[#6D28D9] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED]'
@@ -588,7 +588,7 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
               ) : (
                 <>
                   <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                  <span>Copiar Prompt</span>
+                  <span>Copiar</span>
                 </>
               )}
             </button>
@@ -597,9 +597,9 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
               <button
                 type="button"
                 onClick={() => setCustomizingPrompt(item)}
-                className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-[#E4E4E7] bg-[#FFFFFF] px-3 text-xs font-medium text-[#18181B] transition-colors duration-150 hover:border-[#7C3AED]/60 hover:text-[#7C3AED] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#F3F4F6] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#C4B5FD] whitespace-nowrap cursor-pointer"
+                className="inline-flex h-8 items-center gap-1 rounded-lg border border-[#E4E4E7] bg-[#FFFFFF] px-2.5 text-xs font-medium text-[#18181B] transition-colors duration-150 hover:border-[#7C3AED]/60 hover:text-[#7C3AED] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#F3F4F6] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#C4B5FD] whitespace-nowrap cursor-pointer"
               >
-                <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden="true" />
+                <SlidersHorizontal className="h-3 w-3" aria-hidden="true" />
                 <span>Personalizar</span>
               </button>
             )}
@@ -609,10 +609,11 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
             href={GEMINI_APP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-10 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium text-[#52525B] transition-colors hover:text-[#1D4ED8] dark:text-[#9CA3AF] dark:hover:text-[#93C5FD] whitespace-nowrap"
+            title="Abrir no Gemini"
+            className="inline-flex h-8 items-center gap-1 rounded-lg px-2 text-xs font-medium text-[#52525B] transition-colors hover:text-[#1D4ED8] dark:text-[#9CA3AF] dark:hover:text-[#93C5FD] whitespace-nowrap"
           >
             <Sparkles className="h-3.5 w-3.5 text-[#4285F4]" aria-hidden="true" />
-            <span>Abrir no Gemini</span>
+            <span>Gemini</span>
             <ExternalLink className="h-3 w-3" aria-hidden="true" />
           </a>
         </div>
@@ -621,13 +622,13 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-4 pt-8 pb-10 sm:px-6 sm:pt-12">
+    <div className="mx-auto max-w-6xl px-4 pt-6 pb-10 sm:px-6 sm:pt-8">
       {/* Back navigation */}
-      <div className="mb-6">
+      <div className="mb-4">
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex h-10 items-center gap-2 text-sm font-medium text-[#52525B] transition-colors duration-150 hover:text-[#7C3AED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD] cursor-pointer"
+          className="inline-flex h-9 items-center gap-2 text-sm font-medium text-[#52525B] transition-colors duration-150 hover:text-[#7C3AED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD] cursor-pointer"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           <span>Voltar para os tutoriais</span>
@@ -636,13 +637,13 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
 
       {/* Header / Hero */}
       <section className="max-w-3xl">
-        <p className="text-xs sm:text-sm font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
+        <p className="text-xs font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
           Diretório Prático · Gemini · Google Workspace · Planilhas &amp; Finanças
         </p>
-        <h1 className="mt-3 font-display text-3xl sm:text-5xl font-bold leading-[1.12] tracking-tight text-[#18181B] dark:text-[#F3F4F6]">
+        <h1 className="mt-2 font-display text-2xl sm:text-4xl font-bold leading-[1.14] tracking-tight text-[#18181B] dark:text-[#F3F4F6]">
           Hub de Prompts da Lais Raniele
         </h1>
-        <p className="mt-4 text-base sm:text-lg leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
+        <p className="mt-2.5 text-sm sm:text-base leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
           Prompts prontos e testados para copiar, personalizar com seus dados e
           colar direto no Gemini, Google Planilhas, Gmail, Docs e Apps Script.
         </p>
@@ -651,7 +652,7 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
       {/* Real-Time Search & Category Filters */}
       <section
         aria-label="Busca e filtros de prompts"
-        className="mt-9 flex flex-col gap-4 border-y border-[#E4E4E7] py-6 dark:border-[#2A243D]"
+        className="mt-6 flex flex-col gap-3.5 border-y border-[#E4E4E7] py-4 dark:border-[#2A243D]"
       >
         <div className="relative">
           <Search
@@ -729,10 +730,10 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
       </section>
 
       {/* Prompts Directory Grid */}
-      <section aria-label="Lista de prompts" className="mt-8 space-y-6">
+      <section aria-label="Lista de prompts" className="mt-6 space-y-5">
         {filteredPrompts.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
               {firstBatch.map(renderPromptCard)}
             </div>
 
@@ -740,7 +741,7 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
             <WorkspaceAffiliateCard />
 
             {secondBatch.length > 0 && (
-              <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+              <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
                 {secondBatch.map(renderPromptCard)}
               </div>
             )}

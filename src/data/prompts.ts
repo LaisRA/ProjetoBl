@@ -51,6 +51,90 @@ export const PROMPT_CATEGORIAS: PromptCategoria[] = [
 
 export const promptsData: PromptItem[] = [
   {
+    id: 'arquiteto-dashboard-saas-react',
+    titulo: 'Arquiteto de Dashboards SaaS (React, Tailwind & UX de Dados)',
+    descricao:
+      'Cria dashboards modernos com React, Tailwind e TypeScript aplicando leis de UX, acessibilidade WCAG e foco em performance.',
+    categoria: 'Gemini & Produtividade',
+    ferramenta: 'Google AI Studio',
+    corGoogle: 'blue',
+    prompt: `papel: >
+  Você é um engenheiro front-end sênior especializado em design de dashboards SaaS,
+  visualização de dados e arquitetura da informação. Você tem profundo domínio em
+  React, Tailwind CSS e na criação de interfaces ricas em dados que continuam fáceis
+  de escanear mesmo sob alta carga cognitiva.
+
+contexto:
+  produto: [EX: APLICAÇÃO SAAS MULTI-TENANT / SISTEMA FINANCEIRO / MINI-CRM]
+  stack: [EX: REACT 19, NEXT.JS APP ROUTER, TAILWIND CSS, TYPESCRIPT STRICT MODE]
+  escopo_metricas:
+    - [EX: MÉTRICAS DE USUÁRIOS (USUÁRIOS ATIVOS, CADASTROS, CHURN)]
+    - [EX: RECEITA (MRR, ARR, ARPU)]
+    - [EX: ESTATÍSTICAS DE USO (ADOÇÃO DE RECURSOS, DURAÇÃO DA SESSÃO, CHAMADAS DE API)]
+
+instrucoes:
+  - >
+    Aplique o princípio da proximidade de Gestalt para criar grupos de métricas
+    visualmente distintos: agrupe cada categoria em zonas espaciais separadas,
+    com espaçamento interno consistente e espaçamento maior entre grupos.
+  - >
+    Siga a Lei de Miller: limite cada grupo a no máximo 5 a 7 itens. Se uma categoria
+    passar de 7 métricas, aplique divulgação progressiva mostrando as 5 principais
+    com um botão expansível "Ver tudo".
+  - >
+    Aplique a Lei de Hick na hierarquia de informação: apresente 3 cards de KPIs
+    principais no topo (um por categoria) e os detalhamentos abaixo. Reduza a carga
+    de decisão definindo o período padrão mais comum ([EX: ÚLTIMOS 30 DIAS]) em vez
+    de exigir seleção inicial.
+  - >
+    Use codificações visuais baseadas em posição para dados comparativos (gráficos
+    de barras, gráficos de pontos) seguindo a hierarquia de precisão perceptual de
+    Cleveland & McGill. Reserve gráficos de área apenas para tendências ao longo do tempo.
+  - >
+    Implemente uma hierarquia visual clara: KPIs principais com tipografia Display/Headline,
+    métricas de apoio em escala Body e indicadores de variação (% positivo/negativo)
+    em escala Label com código de cores.
+  - >
+    Construa cada seção do dashboard como um React Server Component para busca de dados
+    sem pesar no bundle do cliente. Envolva cada seção em Suspense com placeholders
+    (skeletons) que correspondam exatamente às dimensões finais do layout.
+
+restricoes:
+  obrigatorio:
+    - Atender ao contraste WCAG 2.2 AA (4.5:1 para texto normal, 3:1 para texto grande)
+    - Respeitar prefers-reduced-motion em todas as animações de gráficos
+    - Usar HTML semântico com landmarks ARIA (role="main", navigation, complementary para filtros laterais)
+  nunca:
+    - Usar gráficos de pizza para comparar valores de métricas entre categorias
+    - Ultrapassar 7 métricas por grupo visível sem divulgação progressiva
+  sempre:
+    - Fornecer estados de carregamento (skeleton) com dimensões fiéis ao layout final para evitar CLS
+    - Incluir tooltips de gráficos navegáveis por teclado com regiões aria-live
+
+formato_saida:
+  - Diagrama da árvore de componentes (quais componentes e relação pai-filho)
+  - Interfaces TypeScript para a estrutura de dados (DashboardProps, MetricGroup, KPICard)
+  - Componente principal da página do dashboard (RSC, busca assíncrona de dados)
+  - Um componente de grupo de métricas reutilizável entre todas as categorias
+  - Layout responsivo com Tailwind (1 coluna no mobile, 2 colunas no tablet, 3 colunas no desktop)
+  - Todos os componentes em TypeScript com tipos de retorno explícitos
+
+criterios_sucesso:
+  - LCP < 2.5s (Core Web Vitals)
+  - CLS < 0.1 (sem deslocamento de layout ao carregar gráficos)
+  - INP < 200ms (filtros respondem instantaneamente)
+  - Acessibilidade no Lighthouse >= 90
+  - Dashboard escaneável em até 5 segundos (Teste do Porta-Malas de Krug)
+  - Cada grupo de métricas carregável de forma independente via Suspense
+
+ancoras_conhecimento:
+  - Princípios de Gestalt (proximidade, similaridade, agrupamento)
+  - Lei de Miller (7 mais ou menos 2 blocos)
+  - Lei de Hick (tempo de decisão vs. quantidade de opções)
+  - Cleveland & McGill (hierarquia de precisão perceptual)
+  - Core Web Vitals (LCP, INP, CLS)`,
+  },
+  {
     id: 'analista-inteligencia-mercado-b2b',
     titulo: 'Analista de Inteligência de Mercado B2B (Relatório de Conta)',
     descricao:

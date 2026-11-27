@@ -55,14 +55,17 @@ export function ArticleView({
   }, []);
 
   const handleShareLink = async () => {
-    const url = window.location.href;
+    const directUrl = `${window.location.origin}${window.location.pathname}#/artigo/${post.slug}`;
     try {
       if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(url);
+        await navigator.clipboard.writeText(directUrl);
       } else {
         const input = document.createElement('input');
-        input.value = url;
+        input.value = directUrl;
+        input.style.position = 'fixed';
+        input.style.opacity = '0';
         document.body.appendChild(input);
+        input.focus();
         input.select();
         document.execCommand('copy');
         document.body.removeChild(input);
@@ -73,7 +76,7 @@ export function ArticleView({
       }
       shareTimeoutRef.current = window.setTimeout(() => {
         setLinkCopied(false);
-      }, 2000);
+      }, 2500);
     } catch {
       // Ignore if clipboard blocked
     }
@@ -352,6 +355,34 @@ export function ArticleView({
           </section>
         )}
 
+        {/* End-of-article Share Row */}
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] px-5 py-4 dark:border-[#2A243D] dark:bg-[#161321]">
+          <p className="text-sm text-[#52525B] dark:text-[#9CA3AF]">
+            Achou este tutorial útil? Compartilhe o link direto com quem precisa.
+          </p>
+          <button
+            type="button"
+            onClick={handleShareLink}
+            className={`inline-flex h-10 items-center gap-2 rounded-lg px-4 text-xs font-semibold transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:focus-visible:outline-[#8B5CF6] ${
+              linkCopied
+                ? 'bg-[#10B981] text-white'
+                : 'bg-[#7C3AED] text-white hover:bg-[#6D28D9] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED]'
+            }`}
+          >
+            {linkCopied ? (
+              <>
+                <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>Link copiado!</span>
+              </>
+            ) : (
+              <>
+                <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>Compartilhar tutorial</span>
+              </>
+            )}
+          </button>
+        </div>
+
         {/* Previous / Next Article Navigation */}
         {(prevPost || nextPost) && (
           <nav
@@ -394,6 +425,25 @@ export function ArticleView({
           </nav>
         )}
       </article>
+
+      {/* Brief floating toast notification when tutorial link is copied */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className={`pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transition-all duration-200 ${
+          linkCopied
+            ? 'translate-y-0 opacity-100'
+            : 'translate-y-3 opacity-0'
+        }`}
+      >
+        <div className="inline-flex items-center gap-2 rounded-xl border border-[#10B981]/30 bg-[#18181B] px-4 py-2.5 text-sm font-medium text-white shadow-lg dark:border-[#10B981]/40 dark:bg-[#1E1A2E]">
+          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#10B981] text-white">
+            <Check className="h-3 w-3" aria-hidden="true" />
+          </span>
+          <span>Link copiado!</span>
+        </div>
+      </div>
     </>
   );
 }
