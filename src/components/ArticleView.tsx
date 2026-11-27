@@ -47,29 +47,50 @@ export function ArticleView({
   }, [post.slug]);
 
   useEffect(() => {
+    setLinkCopied(false);
+    if (shareTimeoutRef.current !== null) {
+      window.clearTimeout(shareTimeoutRef.current);
+      shareTimeoutRef.current = null;
+    }
     return () => {
       if (shareTimeoutRef.current !== null) {
         window.clearTimeout(shareTimeoutRef.current);
       }
     };
-  }, []);
+  }, [post.slug]);
 
   const handleShareLink = async () => {
     const directUrl = `${window.location.origin}${window.location.pathname}#/artigo/${post.slug}`;
-    try {
-      if (navigator.clipboard && window.isSecureContext) {
+    let copied = false;
+
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
         await navigator.clipboard.writeText(directUrl);
-      } else {
-        const input = document.createElement('input');
-        input.value = directUrl;
-        input.style.position = 'fixed';
-        input.style.opacity = '0';
-        document.body.appendChild(input);
-        input.focus();
-        input.select();
-        document.execCommand('copy');
-        document.body.removeChild(input);
+        copied = true;
+      } catch {
+        copied = false;
       }
+    }
+
+    if (!copied) {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = directUrl;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        textarea.style.pointerEvents = 'none';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        copied = document.execCommand('copy');
+        document.body.removeChild(textarea);
+      } catch {
+        copied = false;
+      }
+    }
+
+    if (copied) {
       setLinkCopied(true);
       if (shareTimeoutRef.current !== null) {
         window.clearTimeout(shareTimeoutRef.current);
@@ -77,8 +98,6 @@ export function ArticleView({
       shareTimeoutRef.current = window.setTimeout(() => {
         setLinkCopied(false);
       }, 2500);
-    } catch {
-      // Ignore if clipboard blocked
     }
   };
 
@@ -225,8 +244,8 @@ export function ArticleView({
           <button
             type="button"
             onClick={handleShareLink}
-            aria-live="polite"
-            className={`inline-flex h-10 items-center gap-2 rounded-lg px-3.5 text-xs font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+            aria-label="Copiar link direto deste tutorial"
+            className={`inline-flex h-10 items-center gap-2 rounded-lg px-3.5 text-xs font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:focus-visible:outline-[#8B5CF6] whitespace-nowrap shrink-0 cursor-pointer ${
               linkCopied
                 ? 'bg-[#10B981] text-white'
                 : 'border border-[#E4E4E7] bg-[#FFFFFF] text-[#52525B] hover:border-[#7C3AED]/60 hover:text-[#18181B] dark:border-[#2A243D] dark:bg-[#161321] dark:text-[#9CA3AF] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#F3F4F6]'
@@ -431,18 +450,20 @@ export function ArticleView({
         role="status"
         aria-live="polite"
         aria-atomic="true"
-        className={`pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transition-all duration-200 ${
+        className={`pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transition-[transform,opacity] duration-200 ease-out ${
           linkCopied
             ? 'translate-y-0 opacity-100'
             : 'translate-y-3 opacity-0'
         }`}
       >
-        <div className="inline-flex items-center gap-2 rounded-xl border border-[#10B981]/30 bg-[#18181B] px-4 py-2.5 text-sm font-medium text-white shadow-lg dark:border-[#10B981]/40 dark:bg-[#1E1A2E]">
-          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#10B981] text-white">
-            <Check className="h-3 w-3" aria-hidden="true" />
-          </span>
-          <span>Link copiado!</span>
-        </div>
+        {linkCopied && (
+          <div className="inline-flex items-center gap-2 rounded-xl border border-[#10B981]/30 bg-[#18181B] px-4 py-2.5 text-sm font-medium text-white shadow-lg dark:border-[#10B981]/40 dark:bg-[#1E1A2E]">
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#10B981] text-white">
+              <Check className="h-3 w-3" aria-hidden="true" />
+            </span>
+            <span>Link copiado!</span>
+          </div>
+        )}
       </div>
     </>
   );

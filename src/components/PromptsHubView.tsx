@@ -6,20 +6,19 @@ import {
   ExternalLink,
   RotateCcw,
   Search,
-  SlidersHorizontal,
   Sparkles,
   Star,
   X,
 } from 'lucide-react';
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { LINKS_SOCIAIS } from '../data/posts';
 import {
   PROMPT_CATEGORIAS,
   promptsData,
-  type GoogleAccent,
   type PromptCategoria,
   type PromptItem,
 } from '../data/prompts';
+import { HighlightedPromptText, PromptCard } from './PromptCard';
 
 interface PromptsHubViewProps {
   onBack: () => void;
@@ -84,67 +83,6 @@ function isLongField(label: string): boolean {
   );
 }
 
-function getGoogleAccentTextClass(accent: GoogleAccent): string {
-  switch (accent) {
-    case 'green':
-      return 'text-[#15803D] dark:text-[#86EFAC]';
-    case 'blue':
-      return 'text-[#1D4ED8] dark:text-[#93C5FD]';
-    case 'red':
-      return 'text-[#B91C1C] dark:text-[#FCA5A5]';
-    case 'yellow':
-      return 'text-[#A16207] dark:text-[#FDE047]';
-  }
-}
-
-function HighlightedPromptText({
-  text,
-  allowedVariables,
-  customValues,
-}: {
-  text: string;
-  allowedVariables?: string[];
-  customValues?: Record<string, string>;
-}) {
-  const parts = text.split(/(\[[^\]]+\])/g);
-  const allowedSet = allowedVariables ? new Set(allowedVariables) : null;
-
-  return (
-    <>
-      {parts.map((part, idx) => {
-        if (part.startsWith('[') && part.endsWith(']')) {
-          const key = part.slice(1, -1);
-          if (allowedSet && !allowedSet.has(key)) {
-            return <Fragment key={idx}>{part}</Fragment>;
-          }
-          const customValue = customValues?.[key]?.trim();
-
-          if (customValue) {
-            return (
-              <mark
-                key={idx}
-                className="rounded bg-[#10B981]/15 px-1 py-0.5 font-medium text-[#047857] dark:bg-[#10B981]/20 dark:text-[#6EE7B7]"
-              >
-                {customValue}
-              </mark>
-            );
-          }
-
-          return (
-            <span
-              key={idx}
-              className="rounded bg-[#EDE9FE] px-1 py-0.5 font-mono text-[0.88em] font-medium text-[#6D28D9] dark:bg-[#8B5CF6]/20 dark:text-[#C4B5FD]"
-            >
-              {part}
-            </span>
-          );
-        }
-
-        return <Fragment key={idx}>{part}</Fragment>;
-      })}
-    </>
-  );
-}
 
 async function copyToClipboard(text: string): Promise<boolean> {
   try {
@@ -181,18 +119,18 @@ function WorkspaceAffiliateCard() {
         <span className="bg-[#34A853]" />
       </div>
 
-      <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+      <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-5">
         <div className="max-w-xl">
-          <p className="text-xs font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
+          <p className="text-[11px] font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
             Indicação oficial · Google Workspace + Gemini
           </p>
           <h2
             id="prompts-workspace-banner"
-            className="mt-1.5 font-display text-lg sm:text-xl font-bold tracking-tight text-[#18181B] dark:text-[#F3F4F6]"
+            className="mt-1 font-display text-base sm:text-lg font-bold tracking-tight text-[#18181B] dark:text-[#F3F4F6]"
           >
             Quer usar o Gemini integrado direto no seu Gmail, Docs e Planilhas?
           </h2>
-          <p className="mt-1.5 text-sm leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
+          <p className="mt-1 text-xs sm:text-sm leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
             Conheça o Google Workspace com meu link de afiliada e leve esses
             prompts para dentro das ferramentas que você já usa todos os dias.
           </p>
@@ -202,7 +140,7 @@ function WorkspaceAffiliateCard() {
           href={WORKSPACE_AFFILIATE_URL}
           target="_blank"
           rel="noopener noreferrer sponsored"
-          className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#7C3AED] px-5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-[#6D28D9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] whitespace-nowrap"
+          className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#7C3AED] px-4 text-xs sm:text-sm font-semibold text-white transition-colors duration-150 hover:bg-[#6D28D9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] whitespace-nowrap"
         >
           <span>Conhecer o Google Workspace</span>
           <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -494,156 +432,49 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
   ];
 
   const firstBatch =
-    filteredPrompts.length > 6
-      ? filteredPrompts.slice(0, 6)
+    filteredPrompts.length > 12
+      ? filteredPrompts.slice(0, 12)
       : filteredPrompts;
   const secondBatch =
-    filteredPrompts.length > 6 ? filteredPrompts.slice(6) : [];
+    filteredPrompts.length > 12 ? filteredPrompts.slice(12) : [];
 
-  const renderPromptCard = (item: PromptItem) => {
-    const isFavorited = favoriteIds.includes(item.id);
-    const isCopied = copiedId === item.id;
-    const variableCount = extractVariables(item).length;
-
-    return (
-      <article
-        key={item.id}
-        className="flex flex-col justify-between rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] p-4 transition-colors duration-150 hover:border-[#7C3AED]/45 dark:border-[#2A243D] dark:bg-[#161321] dark:hover:border-[#8B5CF6]/55"
-      >
-        <div>
-          {/* Top metadata row: Tool & Category + Favorite toggle */}
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex min-w-0 items-center gap-1.5 text-[11px] font-medium">
-              <span className={`truncate ${getGoogleAccentTextClass(item.corGoogle)}`}>
-                {item.ferramenta}
-              </span>
-              <span
-                aria-hidden="true"
-                className="shrink-0 text-[#D4D4D8] dark:text-[#3F3A52]"
-              >
-                ·
-              </span>
-              <span className="truncate text-[#52525B] dark:text-[#9CA3AF]">
-                {item.categoria}
-              </span>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => toggleFavorite(item.id)}
-              aria-label={
-                isFavorited
-                  ? `Remover "${item.titulo}" dos favoritos`
-                  : `Salvar "${item.titulo}" nos favoritos`
-              }
-              aria-pressed={isFavorited}
-              title={isFavorited ? 'Remover dos favoritos' : 'Salvar nos favoritos'}
-              className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border transition-colors duration-150 cursor-pointer ${
-                isFavorited
-                  ? 'border-[#FBBC05]/50 bg-[#FBBC05]/12 text-[#D97706] dark:text-[#FDE047]'
-                  : 'border-[#E4E4E7] bg-[#FAFAFC] text-[#52525B] hover:border-[#FBBC05]/60 hover:text-[#D97706] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#9CA3AF] dark:hover:text-[#FDE047]'
-              }`}
-            >
-              <Star
-                className={`h-3.5 w-3.5 ${isFavorited ? 'fill-current' : ''}`}
-                aria-hidden="true"
-              />
-            </button>
-          </div>
-
-          {/* Title & Description */}
-          <h3 className="mt-2 font-display text-[15px] font-bold leading-snug text-[#18181B] line-clamp-2 dark:text-[#F3F4F6]">
-            {item.titulo}
-          </h3>
-          <p className="mt-1 text-xs leading-relaxed text-[#52525B] line-clamp-2 dark:text-[#9CA3AF]">
-            {item.descricao}
-          </p>
-
-          {/* Compact Uniform Prompt Preview Box with Highlighted [VARIABLES] */}
-          <div className="mt-2.5 h-24 overflow-y-auto code-scroll whitespace-pre-line rounded-lg border border-[#E4E4E7] bg-[#FAFAFC] p-2.5 text-xs leading-relaxed text-[#27272A] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#D1D5DB]">
-            <HighlightedPromptText
-              text={item.prompt}
-              allowedVariables={item.variaveis}
-            />
-          </div>
-        </div>
-
-        {/* Compact Action Buttons Row */}
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-1.5 border-t border-[#E4E4E7]/80 pt-3 dark:border-[#2A243D]/80">
-          <div className="flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => handleCopyPrompt(item)}
-              className={`inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-white transition-colors duration-150 whitespace-nowrap cursor-pointer ${
-                isCopied
-                  ? 'bg-[#10B981]'
-                  : 'bg-[#7C3AED] hover:bg-[#6D28D9] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED]'
-              }`}
-            >
-              {isCopied ? (
-                <>
-                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
-                  <span>Copiado! ✓</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                  <span>Copiar</span>
-                </>
-              )}
-            </button>
-
-            {variableCount > 0 && (
-              <button
-                type="button"
-                onClick={() => setCustomizingPrompt(item)}
-                className="inline-flex h-8 items-center gap-1 rounded-lg border border-[#E4E4E7] bg-[#FFFFFF] px-2.5 text-xs font-medium text-[#18181B] transition-colors duration-150 hover:border-[#7C3AED]/60 hover:text-[#7C3AED] dark:border-[#2A243D] dark:bg-[#0D0B14] dark:text-[#F3F4F6] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#C4B5FD] whitespace-nowrap cursor-pointer"
-              >
-                <SlidersHorizontal className="h-3 w-3" aria-hidden="true" />
-                <span>Personalizar</span>
-              </button>
-            )}
-          </div>
-
-          <a
-            href={GEMINI_APP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Abrir no Gemini"
-            className="inline-flex h-8 items-center gap-1 rounded-lg px-2 text-xs font-medium text-[#52525B] transition-colors hover:text-[#1D4ED8] dark:text-[#9CA3AF] dark:hover:text-[#93C5FD] whitespace-nowrap"
-          >
-            <Sparkles className="h-3.5 w-3.5 text-[#4285F4]" aria-hidden="true" />
-            <span>Gemini</span>
-            <ExternalLink className="h-3 w-3" aria-hidden="true" />
-          </a>
-        </div>
-      </article>
-    );
-  };
+  const renderPromptCard = (item: PromptItem) => (
+    <PromptCard
+      key={item.id}
+      item={item}
+      isFavorited={favoriteIds.includes(item.id)}
+      isCopied={copiedId === item.id}
+      variableCount={extractVariables(item).length}
+      geminiUrl={GEMINI_APP_URL}
+      onToggleFavorite={toggleFavorite}
+      onCopy={handleCopyPrompt}
+      onCustomize={setCustomizingPrompt}
+    />
+  );
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pt-6 pb-10 sm:px-6 sm:pt-8">
+    <div className="mx-auto max-w-7xl px-4 pt-5 pb-10 sm:px-6 sm:pt-6">
       {/* Back navigation */}
-      <div className="mb-4">
+      <div className="mb-3">
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex h-9 items-center gap-2 text-sm font-medium text-[#52525B] transition-colors duration-150 hover:text-[#7C3AED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD] cursor-pointer"
+          className="inline-flex h-8 items-center gap-1.5 text-xs sm:text-sm font-medium text-[#52525B] transition-colors duration-150 hover:text-[#7C3AED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C3AED] dark:text-[#9CA3AF] dark:hover:text-[#C4B5FD] cursor-pointer"
         >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
           <span>Voltar para os tutoriais</span>
         </button>
       </div>
 
-      {/* Header / Hero */}
+      {/* Compact Header / Hero */}
       <section className="max-w-3xl">
-        <p className="text-xs font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
+        <p className="text-[11px] sm:text-xs font-medium text-[#7C3AED] dark:text-[#C4B5FD]">
           Diretório Prático · Gemini · Google Workspace · Planilhas &amp; Finanças
         </p>
-        <h1 className="mt-2 font-display text-2xl sm:text-4xl font-bold leading-[1.14] tracking-tight text-[#18181B] dark:text-[#F3F4F6]">
+        <h1 className="mt-1 font-display text-2xl sm:text-3xl font-bold leading-[1.15] tracking-tight text-[#18181B] dark:text-[#F3F4F6]">
           Hub de Prompts da Lais Raniele
         </h1>
-        <p className="mt-2.5 text-sm sm:text-base leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
+        <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-[#52525B] dark:text-[#9CA3AF]">
           Prompts prontos e testados para copiar, personalizar com seus dados e
           colar direto no Gemini, Google Planilhas, Gmail, Docs e Apps Script.
         </p>
@@ -652,7 +483,7 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
       {/* Real-Time Search & Category Filters */}
       <section
         aria-label="Busca e filtros de prompts"
-        className="mt-6 flex flex-col gap-3.5 border-y border-[#E4E4E7] py-4 dark:border-[#2A243D]"
+        className="mt-4 flex flex-col gap-3 border-y border-[#E4E4E7] py-3.5 dark:border-[#2A243D]"
       >
         <div className="relative">
           <Search
@@ -665,7 +496,7 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Buscar por fórmula, fluxo de caixa, Apps Script, Gmail, Trends..."
             aria-label="Buscar prompts por título, ferramenta ou palavra-chave"
-            className="h-11 w-full rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] pr-10 pl-10 text-sm text-[#18181B] placeholder:text-[#52525B]/75 transition-colors focus:border-[#7C3AED] focus:outline-none dark:border-[#2A243D] dark:bg-[#161321] dark:text-[#F3F4F6] dark:placeholder:text-[#9CA3AF]/75 dark:focus:border-[#8B5CF6]"
+            className="h-10 w-full rounded-xl border border-[#E4E4E7] bg-[#FFFFFF] pr-10 pl-10 text-sm text-[#18181B] placeholder:text-[#52525B]/75 transition-colors focus:border-[#7C3AED] focus:outline-none dark:border-[#2A243D] dark:bg-[#161321] dark:text-[#F3F4F6] dark:placeholder:text-[#9CA3AF]/75 dark:focus:border-[#8B5CF6]"
           />
           {searchQuery && (
             <button
@@ -679,11 +510,11 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
           )}
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-2.5">
           <div
             role="tablist"
             aria-label="Filtrar prompts por categoria"
-            className="flex flex-wrap items-center gap-2"
+            className="flex flex-wrap items-center gap-1.5"
           >
             {categories.map((categoria) => {
               const isActive = selectedCategory === categoria;
@@ -695,7 +526,7 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => setSelectedCategory(categoria)}
-                  className={`inline-flex h-9 items-center gap-1.5 rounded-lg px-3.5 text-xs sm:text-sm font-medium transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer ${
+                  className={`inline-flex h-8 items-center gap-1.5 rounded-lg px-3 text-xs font-medium transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer ${
                     isActive
                       ? 'bg-[#7C3AED] text-white dark:bg-[#8B5CF6]'
                       : 'border border-[#E4E4E7] bg-[#FFFFFF] text-[#52525B] hover:border-[#7C3AED]/50 hover:text-[#18181B] dark:border-[#2A243D] dark:bg-[#161321] dark:text-[#9CA3AF] dark:hover:border-[#8B5CF6]/60 dark:hover:text-[#F3F4F6]'
@@ -703,7 +534,7 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
                 >
                   {isFavTab && (
                     <Star
-                      className={`h-3.5 w-3.5 ${
+                      className={`h-3 w-3 ${
                         isActive ? 'fill-white text-white' : 'text-[#D97706] dark:text-[#FDE047]'
                       }`}
                       aria-hidden="true"
@@ -729,11 +560,11 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
         </div>
       </section>
 
-      {/* Prompts Directory Grid */}
-      <section aria-label="Lista de prompts" className="mt-6 space-y-5">
+      {/* Compact Prompts Directory Grid */}
+      <section aria-label="Lista de prompts" className="mt-5 space-y-5">
         {filteredPrompts.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {firstBatch.map(renderPromptCard)}
             </div>
 
@@ -741,7 +572,7 @@ export function PromptsHubView({ onBack }: PromptsHubViewProps) {
             <WorkspaceAffiliateCard />
 
             {secondBatch.length > 0 && (
-              <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {secondBatch.map(renderPromptCard)}
               </div>
             )}
